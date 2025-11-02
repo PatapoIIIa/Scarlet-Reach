@@ -22,7 +22,7 @@
 
 /obj/item/natural/shellplant/pumpkin/examine(mob/user)
 	. = ..()
-	
+
 	if(open)
 		. += span_smallnotice("It is open and I could use a spoon to extract its flesh.\n")
 		. += span_smallnotice("It has [foodamt] chunks remaining.")
@@ -101,3 +101,52 @@
 	if((user.used_intent.blade_class == BCLASS_CUT || user.used_intent.blade_class == BCLASS_STAB) && (I.wlength == WLENGTH_SHORT) && (!user.used_intent.noaa))
 		ui_interact(user)
 		return
+
+// -------- TGUI implementation! --------
+/obj/item/pumpkinshell/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "Carving", "Carving")
+		ui.open()
+
+/obj/item/pumpkinshell/ui_assets(mob/user)
+	return list(
+		get_asset_datum(/datum/asset/spritesheet/pumpkin_carvings)
+	)
+
+/obj/item/pumpkinshell/ui_static_data(mob/user)
+	var/list/data = ..()
+
+	var/list/carvings = list()
+	var/datum/asset/spritesheet/spritesheet = get_asset_datum(/datum/asset/spritesheet/pumpkin_carvings)
+
+	for(var/obj/item/flashlight/flare/torch/lantern/pumpkin/P as anything in typesof(/obj/item/flashlight/flare/torch/lantern/pumpkin))
+		UNTYPED_LIST_ADD(carvings, list(
+			"name" = P.name,
+			"ref" = REF(P),
+			"icon" = spritesheet.icon_class_name(sanitize_css_class_name("carving_[REF(P)]"))
+		))
+	data["carvings"] = carvings
+	return data
+
+/obj/item/pumpkinshell/ui_act(action, list/params, datum/tgui/ui)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("choose_carving")
+			var/obj/item/flashlight/flare/torch/lantern/pumpkin/P = locate(params["ref"])
+			var/mob/user = ui.user
+			if(!P)
+				return TRUE
+
+			user.visible_message(span_notice("[user] begins to carve a [P.name]."), \
+							span_notice("I begin carving a [P.name]."))
+			if(do_after(user, 2 SECONDS))
+				playsound(get_turf(user), 'modular/Neu_Food/sound/slicing.ogg', 60, TRUE, -1)
+				new P(loc)
+
+			ui.close()
+			qdel(src)
+			return TRUE

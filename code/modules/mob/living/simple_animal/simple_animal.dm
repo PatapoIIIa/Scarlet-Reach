@@ -129,6 +129,8 @@ GLOBAL_VAR_INIT(farm_animals, FALSE)
 
 	///List of things spawned at mob's loc when it dies.
 	var/list/loot = list()
+	//Devalue the worth of the items they drop, for things that inflate the economy BADLY 
+	var/purge_worth = FALSE 
 	///Causes mob to be deleted on death, useful for mobs that spawn lootable corpses.
 	var/del_on_death = 0
 	var/deathmessage = ""
@@ -564,8 +566,10 @@ GLOBAL_VAR_INIT(farm_animals, FALSE)
 
 /mob/living/simple_animal/proc/drop_loot()
 	if(loot.len)
-		for(var/i in loot)
+		for(var/atom/movable/i in loot) // If someone puts a turf in this list I'm going to kill you.
 			new i(loc)
+			if(purge_worth)
+				i.sellprice  =0
 
 /mob/living/simple_animal/death(gibbed)
 	movement_type &= ~FLYING

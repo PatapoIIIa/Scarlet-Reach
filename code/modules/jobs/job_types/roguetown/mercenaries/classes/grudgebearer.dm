@@ -115,7 +115,7 @@
 			/obj/item/paper/scroll/grudge,
 			/obj/item/natural/feather,
 			)
-		var/weapons = list("Warhammer + Dwarven Shield", "Battle Axe + Dwarven Shield", "Great Axe", "Grandmace")
+		var/weapons = list("Warpick + Dwarven Shield", "Warhammer + Dwarven Shield", "Battle Axe + Dwarven Shield", "Great Axe", "Grandmace")
 		var/wepchoice = input("Choose your weapon", "Available weapons") as anything in weapons
 		switch(wepchoice)
 

@@ -53,7 +53,7 @@
 		shirt = /obj/item/clothing/suit/roguetown/shirt/undershirt/black
 		gloves = /obj/item/clothing/gloves/roguetown/plate/dwarven
 		pants = /obj/item/clothing/under/roguetown/trou/leather
-		armor = /obj/item/clothing/suit/roguetown/armor/plate/half
+		armor = /obj/item/clothing/suit/roguetown/armor/plate/half/fluted/dwarven
 		mask = /obj/item/clothing/head/roguetown/paddedcap
 		r_hand = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow
 		backpack_contents = list(
@@ -63,7 +63,7 @@
 			/obj/item/paper/scroll/grudge,
 			/obj/item/natural/feather,
 			/obj/item/rogueweapon/tongs = 1,
-			/obj/item/clothing/head/roguetown/helmet/heavy/dwarven,
+			/obj/item/clothing/head/roguetown/helmet/heavy/dwarven/smith,
 			/obj/item/flashlight/flare/torch/lantern,
 			)
 
@@ -141,6 +141,28 @@
 				r_hand = /obj/item/rogueweapon/mace/goden/steel
 				H.adjust_skillrank(/datum/skill/combat/maces, 1, TRUE)
 				H.adjust_skillrank(/datum/skill/combat/polearms, 1, TRUE)
+
+
+// Dwarf Smith Armor
+
+/obj/item/clothing/suit/roguetown/armor/plate/half/fluted/dwarven //Sprite has a tasset, making it fluted now.
+	name = "grudgebearer splint apron"
+	desc = "A standard, layered mixture of plate and maille, worn by many dwarven smiths."
+	icon = 'icons/roguetown/clothing/special/race_armor.dmi'
+	mob_overlay_icon = 'icons/roguetown/clothing/special/onmob/race_armor.dmi'
+	allowed_race = list(/datum/species/dwarf, /datum/species/dwarf/mountain)
+	icon_state = "dsmithchest"
+	item_state = "dsmithchest"
+	smelt_bar_num = 2
+
+/obj/item/clothing/head/roguetown/helmet/heavy/dwarven/smith
+	name = "grudgesmith dwarven helm"
+	desc = "A hardy, layered helmet. It lets one's dwarvenly beard to poke out. \
+	This one is intended for the smiths of the clan. No less protective. All the more stylish."
+	icon_state = "dsmithhead"
+	item_state = "dsmithhead"
+
+// Dwarf Soldier Armor
 
 /obj/item/clothing/suit/roguetown/armor/plate/full/dwarven
 	name = "grudgebearer dwarven plate"

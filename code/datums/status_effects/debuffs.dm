@@ -106,7 +106,6 @@
 
 /datum/status_effect/incapacitating/sleeping/tick()
 	if(owner.health < owner.crit_threshold) // no sleep-healing while we're dying.
-		qdel(src)
 		return
 
 	if(owner.maxHealth)

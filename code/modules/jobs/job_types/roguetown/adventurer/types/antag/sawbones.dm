@@ -5,7 +5,7 @@
 	allowed_races = RACES_ALL_KINDS
 	outfit = /datum/outfit/job/roguetown/bandit/sawbones
 	category_tags = list(CTAG_BANDIT)
-	maximum_possible_slots = 2 // We only want one of these because of master in swords.
+	maximum_possible_slots = 1 // We only want one of these because of master in swords. (enforcing this comment)
 	cmode_music = 'sound/music/combat_physician.ogg'
 	subclass_social_rank = SOCIAL_RANK_PEASANT
 
@@ -16,9 +16,11 @@
 		TRAIT_DECEIVING_MEEKNESS
 	)
 	subclass_stats = list(
-		STATKEY_INT = 4,
+		STATKEY_INT = 3,
 		STATKEY_SPD = 3,
-		STATKEY_LCK = 3
+		STATKEY_LCK = 3,
+		STATKEY_CON = 1,
+		STATKEY_END = 1
 	)
 
 	subclass_skills = list(

@@ -27,7 +27,7 @@
 	var/t_has = p_have()
 	var/t_is = p_are()
 	var/obscure_name = FALSE
-	var/race_name = dna.species.name
+	var/race_name = "<a href='?src=[REF(src)];species_lore=1'><u>[dna.species.name]</u></A>"
 	var/datum/antagonist/maniac/maniac = user.mind?.has_antag_datum(/datum/antagonist/maniac)
 	var/datum/antagonist/skeleton/skeleton = user.mind?.has_antag_datum(/datum/antagonist/skeleton)
 	if(maniac && (user != src))
@@ -83,12 +83,31 @@
 				display_as_wanderer = TRUE
 			if(islatejoin)
 				is_returning = TRUE
+		var/rank_color = "725D4C"
+		if(HAS_TRAIT(src, TRAIT_NOBLE) && social_rank < 4)
+			social_rank = SOCIAL_RANK_MINOR_NOBLE
+		switch(social_rank)
+			if(SOCIAL_RANK_PEASANT)
+				rank_color = "91733B"
+			if(SOCIAL_RANK_YEOMAN)
+				rank_color = "B1892A"
+			if(SOCIAL_RANK_MINOR_NOBLE)
+				rank_color = "D09F19"
+			if(SOCIAL_RANK_NOBLE)
+				rank_color = "ECB20A"
+			if(SOCIAL_RANK_ROYAL)
+				rank_color = "FFBF00"
+		var/social_strata = "<a href='?src=[REF(src)];social_strata=1'><font color='#[rank_color]'>⚜</font></A>"
+		var/display1
+		var/display2 = "[!HAS_TRAIT(usr, TRAIT_OUTLANDER) ? "[social_strata]" : " "]"
 		if(display_as_wanderer)
-			. = list(span_info("ø ------------ ø\nThis is <EM>[used_name]</EM>, the wandering [race_name]."))
+			display1 = span_info("ø ------------ ø\nThis is <EM>[used_name]</EM>, the wandering [race_name].")
 		else if(used_title)
-			. = list(span_info("ø ------------ ø\nThis is <EM>[used_name]</EM>, the [is_returning ? "returning " : ""][race_name] [used_title]."))
+			display1 = span_info("ø ------------ ø\nThis is <EM>[used_name]</EM>, the [is_returning ? "returning " : ""][race_name] [used_title].")
 		else
-			. = list(span_info("ø ------------ ø\nThis is the <EM>[used_name]</EM>, the [race_name]."))
+			display1 = span_info("ø ------------ ø\nThis is the <EM>[used_name]</EM>, the [race_name].")
+		. = list("[display1] [display2]")
+		. += span_info("[capitalize(m2)] [dna.species.skin_tone_wording ? lowertext(dna.species.skin_tone_wording) : "skin tone"] originates in [dna.species.origin].")
 
 		if(HAS_TRAIT(src, TRAIT_WITCH))
 			if(HAS_TRAIT(user, TRAIT_NOBLE) || HAS_TRAIT(user, TRAIT_INQUISITION) || HAS_TRAIT(user, TRAIT_WITCH))
@@ -244,7 +263,6 @@
 				if (THEY_THEM, THEY_THEM_F, IT_ITS)
 					. += span_redtext("[m1] repulsive!")
 
-	
 	if (HAS_TRAIT(src, TRAIT_CRITICAL_WEAKNESS) && (!HAS_TRAIT(src, TRAIT_VAMP_DREAMS)))
 		if(isliving(user))
 			var/mob/living/L = user
@@ -255,6 +273,28 @@
 		var/atom/item = get_most_expensive()
 		if(item)
 			. += span_notice("You get the feeling [m2] most valuable possession is \a [item].")
+
+	if(HAS_TRAIT(user, TRAIT_ROYALSERVANT))
+		var/datum/job/our_job = SSjob.name_occupations[job]
+		if(length(culinary_preferences) && is_type_in_list(our_job, list(/datum/job/roguetown/lord, /datum/job/roguetown/lady, /datum/job/roguetown/exlady, /datum/job/roguetown/prince)))
+			var/obj/item/reagent_containers/food/snacks/fav_food = src.culinary_preferences[CULINARY_FAVOURITE_FOOD]
+			var/datum/reagent/consumable/fav_drink = src.culinary_preferences[CULINARY_FAVOURITE_DRINK]
+			if(fav_food)
+				if(fav_drink)
+					. += span_notice("Their favourites are [fav_food.name] and [fav_drink.name].")
+				else
+					. += span_notice("Their favourite is [fav_food.name].")
+			else if(fav_drink)
+				. += span_notice("Their favourite is [fav_drink.name].")
+			var/obj/item/reagent_containers/food/snacks/hated_food = src.culinary_preferences[CULINARY_HATED_FOOD]
+			var/datum/reagent/consumable/hated_drink = src.culinary_preferences[CULINARY_HATED_DRINK]
+			if(hated_food)
+				if(hated_drink)
+					. += span_notice("They hate [hated_food.name] and [hated_drink.name].")
+				else
+					. += span_notice("They hate [hated_food.name].")
+			else if(hated_drink)
+				. += span_notice("They hate [hated_drink.name].")
 
 	var/is_stupid = FALSE
 	var/is_smart = FALSE
@@ -555,6 +595,9 @@
 
 	var/temp = getBruteLoss() + getFireLoss() //no need to calculate each of these twice
 
+	if (get_bodypart(BODY_ZONE_HEAD)?.grievously_wounded)
+		msg += span_bloody("<b>[p_their(TRUE)] neck is a ghastly ruin of blood and bone, barely hanging on!</b>")
+
 	if(!(user == src && src.hal_screwyhud == SCREWYHUD_HEALTHY)) //fake healthy
 		// Damage
 		switch(temp)
@@ -673,9 +716,9 @@
 				msg += "[m1] looking parched."
 
 	//Fire/water stacks
-	if(fire_stacks + divine_fire_stacks > 0)
+	if(has_status_effect(/datum/status_effect/fire_handler))
 		msg += "[m1] covered in something flammable."
-	else if(fire_stacks < 0)
+	if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks))
 		msg += "[m1] soaked."
 
 	//Status effects

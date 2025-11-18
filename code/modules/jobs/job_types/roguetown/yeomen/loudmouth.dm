@@ -9,6 +9,7 @@
 	spells = list(/obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
 	allowed_races = RACES_MANMADE_UP
 	allowed_ages = ALL_AGES_LIST
+	social_rank = SOCIAL_RANK_YEOMAN
 
 	outfit = /datum/outfit/job/roguetown/loudmouth
 	display_order = JDO_LOUDMOUTH
@@ -23,14 +24,6 @@
 	job_subclasses = list(
 		/datum/advclass/loudmouth
 	)
-
-/datum/job/roguetown/loudmouth/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/loudmouth
 	name = "Loudmouth"

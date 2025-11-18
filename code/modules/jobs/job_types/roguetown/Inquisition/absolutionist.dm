@@ -8,21 +8,24 @@
 	allowed_races = RACES_CHURCH_FAVORED_UP_PLUS_WILDKIN		//An incredibly bigoted organization. They would only allow races PSYDON Himself created into such an esteemed role. Aasimar are given a pass, as they consider the Ten to be saints, and Aasimar have far more direct connections to them then the other races. Wildkin allowed for absolver due to sacrificial lamb symbolism.
 	disallowed_races = list(
 		/datum/species/lamia,
+		/datum/species/harpy,
 	)
 	allowed_patrons = list(/datum/patron/old_god) //You MUST have a Psydonite character to start. Just so people don't get japed into Oops Suddenly Psydon!
 	tutorial = "The Orthodoxy claims you are naught more than a 'cleric', but you know the truth; you are a sacrifical lamb. Your hands, unmarred through prayer and pacifism, have been gifted with the power to manipulate lux - to siphon away the wounds of others, so that you may endure in their stead. Let your censer's light shepherd the Inquisitor's retinue forth, lest they're led astray by wrath and temptation."
 	selection_color = JCOLOR_INQUISITION
 	outfit = /datum/outfit/job/roguetown/absolver
 	display_order = JDO_ABSOLVER
-	min_pq = 5 // Low potential for grief. A pacifist by trade. Also needs to know wtf a PSYDON is.
+	min_pq = 13 // Low potential for grief. A pacifist by trade. Also needs to know wtf a PSYDON is.
 	max_pq = null
 	round_contrib_points = 2
 	wanderer_examine = FALSE
 	advjob_examine = FALSE
 	give_bank_account = 15
+	social_rank = SOCIAL_RANK_YEOMAN
 
 	virtue_restrictions = list(
 		/datum/virtue/combat/hollow_life,
+		/datum/virtue/combat/vampire,
 	)
 
 	job_traits = list(
@@ -33,21 +36,14 @@
 		TRAIT_SILVER_BLESSED,
 		TRAIT_STEELHEARTED,
 		TRAIT_INQUISITION,
-		TRAIT_OUTLANDER
+		TRAIT_OUTLANDER,
+		TRAIT_RITUALIST
 	)
 
 	advclass_cat_rolls = list(CTAG_ABSOLVER = 2)
 	job_subclasses = list(
 		/datum/advclass/absolver
 	)
-
-/datum/job/roguetown/absolver/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/absolver
 	name = "Absolver"
@@ -111,13 +107,16 @@
 	id = /obj/item/clothing/ring/signet/silver
 	backpack_contents = list(
 		/obj/item/book/rogue/bibble/psy = 1,
-		/obj/item/natural/bundle/cloth/roll = 2,
+		/obj/item/natural/bundle/cloth/roll = 1,
 		/obj/item/reagent_containers/glass/bottle/rogue/healthpot = 2,
 		/obj/item/paper/inqslip/arrival/abso = 1,
 		/obj/item/needle = 1,
 		/obj/item/natural/worms/leech/cheele = 1,
 		/obj/item/roguekey/inquisition = 1,
+		/obj/item/ritechalk = 1,
 		)
 
 	var/datum/devotion/C = new /datum/devotion(H, H.patron)
 	C.grant_miracles(H, cleric_tier = CLERIC_T4, passive_gain = CLERIC_REGEN_ABSOLVER, start_maxed = TRUE) // PSYDONIAN MIRACLE-WORKER. LUX-MERGING FREEK.
+
+	change_origin(H, /datum/virtue/origin/otava, "Holy order")

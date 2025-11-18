@@ -7,6 +7,7 @@
 	category_tags = list(CTAG_MERCENARY)
 	class_select_category = CLASS_CAT_NALEDI
 	cmode_music = 'sound/music/warscholar.ogg'
+	subclass_social_rank = SOCIAL_RANK_YEOMAN
 
 	subclass_languages = list(
 		/datum/language/celestial,
@@ -97,6 +98,8 @@
 		/obj/item/rogueweapon/scabbard/sheath = 1
 	)
 
+	change_origin(H, /datum/virtue/origin/naledi)
+
 /datum/advclass/mercenary/warscholar/pontifex
 	name = "Naledi Pontifex"
 	tutorial = "You are a Naledi Pontifex, a warrior trained into a hybridized style of movement-controlling magic and hand-to-hand combat. Though your abilities in magical fields are lacking, you are far more dangerous than other magi in a straight fight. You manifest your calm, practiced skill into a killing intent that takes the shape of an arcyne blade."
@@ -181,6 +184,8 @@
 		/obj/item/rogueweapon/huntingknife,
 		/obj/item/rogueweapon/scabbard/sheath = 1
 	)
+
+	change_origin(H, /datum/virtue/origin/naledi)
 
 /datum/advclass/mercenary/warscholar/vizier
 	name = "Naledi Vizier"
@@ -268,7 +273,7 @@
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/convergence)
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/stasis)
 
-
+	change_origin(H, /datum/virtue/origin/naledi)
 
 /datum/outfit/job/roguetown/mercenary/warscholar/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	. = ..()

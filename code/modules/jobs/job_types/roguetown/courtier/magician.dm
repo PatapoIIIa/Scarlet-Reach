@@ -20,11 +20,12 @@
 	outfit = /datum/outfit/job/roguetown/magician
 	whitelist_req = TRUE
 	give_bank_account = 47
-	min_pq = 4 //High potential for abuse, lovepotion/killersice/greater fireball is not for the faint of heart
+	min_pq = 15 //High potential for abuse, lovepotion/killersice/greater fireball is not for the faint of heart
 	max_pq = null
 	round_contrib_points = 2
 	cmode_music = 'sound/music/combat_bandit_mage.ogg'
 	advclass_cat_rolls = list(CTAG_COURTMAGE = 2)
+	social_rank = SOCIAL_RANK_YEOMAN
 
 	// Can't get very far as a magician if you can't chant spells now can you?
 	vice_restrictions = list(/datum/charflaw/mute)
@@ -68,14 +69,6 @@
 /datum/outfit/job/roguetown/magician
 	job_bitflag = BITFLAG_ROYALTY
 	has_loadout = TRUE
-
-/datum/job/roguetown/magician/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/outfit/job/roguetown/magician/choose_loadout(mob/living/carbon/human/H)
 	. = ..()

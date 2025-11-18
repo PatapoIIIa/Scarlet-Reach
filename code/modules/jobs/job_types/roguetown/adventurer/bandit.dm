@@ -18,7 +18,7 @@
 	announce_latejoin = FALSE
 	min_pq = 3
 	max_pq = null
-	round_contrib_points = 5
+	round_contrib_points = 3
 
 	advclass_cat_rolls = list(CTAG_BANDIT = 20)
 	PQ_boost_divider = 10
@@ -41,15 +41,16 @@
 		/datum/advclass/sellsword
 	)
 
+	virtue_restrictions = list(
+		/datum/virtue/combat/vampire,
+	)
+
 /datum/job/roguetown/bandit/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
 	..()
 	if(L)
 		var/mob/living/carbon/human/H = L
 		if(!H.mind)
 			return
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 		H.ambushable = FALSE
 
 /datum/outfit/job/roguetown/bandit/post_equip(mob/living/carbon/human/H)

@@ -30,10 +30,13 @@
 	var/show_runechat = TRUE
 	// Explicitly defined runechat message, if it's not defined and `show_runechat` is TRUE then it will use `message` instaed
 	var/runechat_msg = null
+	// If this is true, we skip setting the base runechat message and instead use whatever our at-emote-runtime message is. Useful for things like kiss/lick which change message based on conditions.
+	var/use_params_for_runechat = FALSE
 	var/is_animal = FALSE
+	var/targetrange = 2 //for ranged targeted emotes, range of 2 is for adjacents
 
 /datum/emote/New()
-	if(!runechat_msg)
+	if(!runechat_msg && !use_params_for_runechat)
 		//strip punctuation
 		var/static/regex/regex = regex(@"[,.!?]", "g")
 		runechat_msg = regex.Replace(message, "")
@@ -64,13 +67,16 @@
 	if(targetted)
 		var/list/mobsadjacent = list()
 		var/mob/chosenmob
-		for(var/mob/living/M in range(user, 2))
+		for(var/mob/living/M in range(user, targetrange))
 			if(M != user)
 				mobsadjacent += M
 		if(mobsadjacent.len)
 			chosenmob = input("[key] who?") in mobsadjacent
 		if(chosenmob)
 			if(user.Adjacent(chosenmob))
+				params = chosenmob.name
+				adjacentaction(user, chosenmob)
+			else if(targetrange > 2) //if it's a ranged targeted emote
 				params = chosenmob.name
 				adjacentaction(user, chosenmob)
 	var/raw_msg = select_message_type(user, intentional)
@@ -121,6 +127,11 @@
 	if(!nomsg)
 		user.log_message(msg, LOG_EMOTE)
 		// Checks to see if we're emoting on the body while we have a head, or if we're emoting on the head.
+		var/pre_color_msg = msg
+		if (use_params_for_runechat) // apply puncutation stripping here where appropriate
+			var/static/regex/regex = regex(@"[,.!?]", "g")
+			pre_color_msg = regex.Replace(pre_color_msg, "")
+			pre_color_msg = trim(pre_color_msg, MAX_MESSAGE_LEN)
 		if(human && human.voice_color)
 			msg = "<span style='color:#[human.voice_color];text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;'><b>[emotelocation]</b></span> " + msg
 		else
@@ -133,7 +144,7 @@
 				M.show_message(msg)
 		var/runechat_msg_to_use = null
 		if(show_runechat)
-			runechat_msg_to_use = runechat_msg ? runechat_msg : raw_msg
+			runechat_msg_to_use = runechat_msg ? runechat_msg : pre_color_msg
 		if(emote_type == EMOTE_AUDIBLE)
 			emotelocation.audible_message(msg, runechat_message = runechat_msg_to_use, log_seen = SEEN_LOG_EMOTE)
 		else
@@ -216,12 +227,12 @@
 	return
 
 /datum/emote/proc/replace_pronoun(mob/user, msg)
-	if(findtext(message, "their"))
-		msg = replacetext(message, "their", user.p_their())
-	if(findtext(message, "them"))
-		msg = replacetext(message, "them", user.p_them())
-	if(findtext(message, "%s"))
-		msg = replacetext(message, "%s", user.p_s())
+	if(findtext(msg, "their"))
+		msg = replacetext(msg, "their", user.p_their())
+	if(findtext(msg, "them"))
+		msg = replacetext(msg, "them", user.p_them())
+	if(findtext(msg, "%s"))
+		msg = replacetext(msg, "%s", user.p_s())
 	return msg
 
 /datum/emote/proc/select_message_type(mob/user, intentional)
@@ -230,12 +241,12 @@
 		var/mob/living/carbon/C = user
 		if(C.silent)
 			. = message_muffled
-		if(!muzzle_ignore && HAS_TRAIT(C, TRAIT_MUTE) && emote_type == EMOTE_AUDIBLE)	
+		if(!muzzle_ignore && HAS_TRAIT(C, TRAIT_MUTE) && emote_type == EMOTE_AUDIBLE)
 			. = message_muffled
 		if(!muzzle_ignore && C.mouth?.muteinmouth && emote_type == EMOTE_AUDIBLE)
 			. = message_muffled
 		if(!muzzle_ignore && emote_type == EMOTE_AUDIBLE && HAS_TRAIT(C, TRAIT_BAGGED))
-			. = message_muffled	
+			. = message_muffled
 
 /datum/emote/proc/select_param(mob/user, params)
 	return replacetext(message_param, "%t", params)
@@ -278,15 +289,15 @@
 /datum/emote/proc/get_target(mob/user, list/params)
 	if(!params.len)
 		return null
-	
+
 	var/target_name = params[1]
 	var/mob/target = null
-	
+
 	for(var/mob/M in view(user))
 		if(M.name == target_name)
 			target = M
 			break
-	
+
 	return target
 
 /datum/emote/proc/is_emote_muffled(mob/living/carbon/H) //ONLY for audible emote use

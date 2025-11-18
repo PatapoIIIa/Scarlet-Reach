@@ -25,6 +25,7 @@
 	min_pq = -10
 	max_pq = null
 	round_contrib_points = 3
+	social_rank = SOCIAL_RANK_PEASANT
 
 	job_traits = list(TRAIT_SEEDKNOW, TRAIT_NOSTINK, TRAIT_LONGSTRIDER)
 
@@ -32,14 +33,6 @@
 	job_subclasses = list(
 		/datum/advclass/soilson
 	)
-
-/datum/job/roguetown/farmer/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/soilson
 	name = "Soilson"

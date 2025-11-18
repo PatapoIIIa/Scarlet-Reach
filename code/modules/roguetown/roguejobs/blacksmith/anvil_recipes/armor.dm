@@ -129,11 +129,11 @@
 	created_item = /obj/item/clothing/suit/roguetown/armor/plate/aalloy
 	craftdiff = 1
 
-/datum/anvil_recipe/armor/paalloy/halfplate
-	name = "Half-Plate Armour (+2 Purified Alloy, +1 Cured Leather)"
+/datum/anvil_recipe/armor/paalloy/fullplate
+	name = "Full Plate Armour (+2 Purified Alloy, +1 Cured Leather)"
 	req_bar = /obj/item/ingot/purifiedaalloy
 	additional_items = list(/obj/item/ingot/purifiedaalloy,/obj/item/ingot/purifiedaalloy,/obj/item/natural/hide/cured)
-	created_item = /obj/item/clothing/suit/roguetown/armor/plate/paalloy
+	created_item = /obj/item/clothing/suit/roguetown/armor/plate/full/paalloy // we dont have purifiedaalloy here anymore, so i think this is fine
 	craftdiff = 3
 
 /datum/anvil_recipe/armor/aalloy/chainmail
@@ -384,11 +384,25 @@
 	created_item = /obj/item/clothing/head/roguetown/helmet/bascinet/klapplong
 	craftdiff = 5
 
+/datum/anvil_recipe/armor/steel/helmet/psylonger
+	name = "Psylonger (+1 Steel, +1 Silver)"
+	req_bar = /obj/item/ingot/steel
+	additional_items = list(/obj/item/ingot/steel, /obj/item/ingot/silver)
+	created_item = /obj/item/clothing/head/roguetown/helmet/bascinet/psylonger
+	craftdiff = 5
+
 /datum/anvil_recipe/armor/steel/helmet/wizardhelm
 	name = "Wizard bascinet (+1 Steel)"
 	req_bar = /obj/item/ingot/steel
 	additional_items = list(/obj/item/ingot/steel)
 	created_item = /obj/item/clothing/head/roguetown/helmet/bascinet/wizardhelm
+	craftdiff = 3
+
+/datum/anvil_recipe/armor/steel/helmet/beakhelm
+	name = "Beak helmet (+1 Steel)"
+	req_bar = /obj/item/ingot/steel
+	additional_items = list(/obj/item/ingot/steel)
+	created_item = /obj/item/clothing/head/roguetown/helmet/heavy/beakhelm
 	craftdiff = 3
 
 /datum/anvil_recipe/armor/steel/helmet/salletv
@@ -440,6 +454,13 @@
 	req_bar = /obj/item/ingot/steel
 	additional_items = list(/obj/item/ingot/steel)
 	created_item = /obj/item/clothing/head/roguetown/helmet/bascinet/etruscan
+	craftdiff = 3
+
+/datum/anvil_recipe/armor/steel/helmet/otavanbascinet
+	name = "Helm, Bascinet Otavan (+1 Steel, +1 Feather)"
+	req_bar = /obj/item/ingot/steel
+	additional_items = list(/obj/item/ingot/steel, /obj/item/natural/feather)
+	created_item = /obj/item/clothing/head/roguetown/helmet/otavan
 	craftdiff = 3
 
 /datum/anvil_recipe/armor/steel/helmet/armet
@@ -622,6 +643,13 @@
 	additional_items = list(/obj/item/clothing/suit/roguetown/armor/plate/half/fluted/ornate, /obj/item/ingot/steel, /obj/item/ingot/silverblessed, /obj/item/natural/hide/cured)
 	created_item = /obj/item/clothing/suit/roguetown/armor/plate/fluted/ornate
 	craftdiff = 3
+
+/datum/anvil_recipe/armor/steel/halfplate/otavanplate
+	name = "Otavan Plate Armour (+2 Steel, +1 Iron, +1 Cured Leather)"
+	req_bar = /obj/item/ingot/steel
+	additional_items = list(/obj/item/ingot/steel, /obj/item/ingot/steel, /obj/item/ingot/iron, /obj/item/natural/hide/cured)
+	created_item = /obj/item/clothing/suit/roguetown/armor/plate/otavan
+	craftdiff = 4
 
 /datum/anvil_recipe/armor/steel/fullplate
 	name = "Full-Plate Armour (+3 Steel, +1 Cured Leather)"
@@ -879,6 +907,29 @@
 	created_item = /obj/item/clothing/mask/rogue/facemask/steel/hound
 	createditem_num = 1
 	craftdiff = 2
+
+/datum/anvil_recipe/armor/steel/yoroku_oni
+	name = "Oni Mask"
+	req_bar = /obj/item/ingot/steel
+	additional_items = list(/obj/item/hair_dye_cream, /obj/item/natural/cloth)
+	created_item = /obj/item/clothing/mask/rogue/facemask/yoruku_oni
+	createditem_num = 1
+	craftdiff = 3
+
+/datum/anvil_recipe/armor/steel/yoroku_kitsune
+	name = "Kitsune Mask"
+	req_bar = /obj/item/ingot/steel
+	additional_items = list(/obj/item/hair_dye_cream, /obj/item/natural/cloth)
+	created_item = /obj/item/clothing/mask/rogue/facemask/yoruku_kitsune
+	createditem_num = 1
+	craftdiff = 3
+
+/datum/anvil_recipe/armor/steel/mempo
+	name = "Steel Mempo"
+	req_bar = /obj/item/ingot/steel
+	created_item = /obj/item/clothing/mask/rogue/facemask/steel/kazengun
+	createditem_num = 1
+	craftdiff = 3
 
 /datum/anvil_recipe/armor/steel/belt
 	name = "Belt"

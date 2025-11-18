@@ -13,6 +13,27 @@
 	reqs = list(/obj/item/reagent_containers/glass/bottle = 1, /obj/item/ash = 2, /obj/item/rogueore/coal = 1, /obj/item/natural/cloth = 1)
 	craftdiff = 2
 
+/datum/crafting_recipe/roguetown/alchemy/bbomb_x3
+	name = "bottle bomb (x3)"
+	category = "Table"
+	result = list(/obj/item/bomb, /obj/item/bomb, /obj/item/bomb)
+	reqs = list(/obj/item/reagent_containers/glass/bottle = 3, /obj/item/ash = 6, /obj/item/rogueore/coal = 3, /obj/item/natural/cloth = 3)
+	craftdiff = 3
+
+/datum/crafting_recipe/roguetown/alchemy/sbomb
+	name = "smoke bomb"
+	category = "Table"
+	result = list(/obj/item/smokebomb)
+	reqs = list(/obj/item/reagent_containers/glass/bottle = 1, /obj/item/ash = 2, /obj/item/reagent_containers/powder/salt = 1, /obj/item/natural/cloth = 1)
+	craftdiff = 2
+
+/datum/crafting_recipe/roguetown/alchemy/sbomb_x3
+	name = "smoke bomb (x3)"
+	category = "Table"
+	result = list(/obj/item/smokebomb, /obj/item/smokebomb, /obj/item/smokebomb)
+	reqs = list(/obj/item/reagent_containers/glass/bottle = 3, /obj/item/ash = 6, /obj/item/reagent_containers/powder/salt = 3, /obj/item/natural/cloth = 3)
+	craftdiff = 3
+
 /datum/crafting_recipe/roguetown/alchemy/ozium
 	name = "ozium"
 	category = "Table"
@@ -270,7 +291,7 @@
 	verbage_simple = "transmute"
 
 /datum/crafting_recipe/roguetown/alchemy/frankenbrew
-	name = "Reanimation Elixir"
+	name = "reanimation elixir"
 	category = "Table"
 	result = list(
 		/obj/item/reagent_containers/glass/bottle/frankenbrew,
@@ -285,3 +306,19 @@
 	)
 	craftdiff = 4
 	verbage_simple = "mix"
+
+/datum/crafting_recipe/roguetown/alchemy/continuity_head
+	name = "Continuity Head"
+	category = "Fleshcrafting"
+	result = list(/obj/item/bodypart/head/prosthetic/continuity_head)
+	reqs = list(
+		/obj/item/bodypart/head = 1,
+		/obj/item/rogueore/gold = 1, // you should insert the organs yourself before doing the ritual
+//		/obj/item/organ/eyes,
+//		/obj/item/organ/ears,
+//		/obj/item/organ/tongue,
+//		/obj/item/organ/brain,
+	)
+	craftdiff = 2
+	skillcraft = /datum/skill/misc/medicine
+	verbage_simple = "fleshcraft"

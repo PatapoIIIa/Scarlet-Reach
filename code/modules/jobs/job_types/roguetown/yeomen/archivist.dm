@@ -12,6 +12,7 @@
 		/datum/species/lamia,
 	)
 	allowed_ages = ALL_AGES_LIST
+	social_rank = SOCIAL_RANK_YEOMAN
 
 	outfit = /datum/outfit/job/roguetown/archivist
 	display_order = JDO_ARCHIVIST
@@ -25,14 +26,6 @@
 	job_subclasses = list(
 		/datum/advclass/archivist
 	)
-
-/datum/job/roguetown/archivist/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/archivist
 	name = "Archivist"

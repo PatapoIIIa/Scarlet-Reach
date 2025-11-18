@@ -23,14 +23,7 @@
 	same_job_respawn_delay = 0
 	class_setup_examine = FALSE	//Nooo thank you
 	cmode_music = 'sound/music/combat_towner.ogg'
-
-/datum/job/roguetown/villager/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(L)
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
+	social_rank = SOCIAL_RANK_PEASANT
 
 /*
 /datum/job/roguetown/adventurer/villager/New()

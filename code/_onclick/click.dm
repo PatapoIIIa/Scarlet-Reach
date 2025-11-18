@@ -345,6 +345,15 @@
 		return
 	if(W)
 		W.melee_attack_chain(src, A, params)
+		if(isliving(src))
+			var/mob/living/L = src
+			var/obj/item/offh = L.get_inactive_held_item()
+			if(offh && HAS_TRAIT(L, TRAIT_DUALWIELDER) && prob(33)) // make it so it has a prob of 33%
+				if((istype(W, offh) || istype(offh, W)) && W != offh && !(L.check_arm_grabbed(L.get_inactive_hand_index())) && (L.last_used_double_attack <= world.time))
+					if(L.stamina_add(2))
+						L.last_used_double_attack = world.time + 3 SECONDS
+						L.visible_message(span_warning("There's an opening! I strike with my off-hand weapon!"))
+						offh.melee_attack_chain(src, A, params)
 	else
 		if(ismob(A))
 			var/adf = used_intent.clickcd
@@ -354,7 +363,7 @@
 				adf = max(round(adf * CLICK_CD_MOD_SWIFT), CLICK_CD_INTENTCAP)
 			changeNext_move(adf)
 		UnarmedAttack(A,1,params)
-	if(mob_timers[MT_INVISIBILITY] > world.time)			
+	if(mob_timers[MT_INVISIBILITY] > world.time)
 		mob_timers[MT_INVISIBILITY] = world.time
 		update_sneak_invis(reset = TRUE)
 
@@ -653,8 +662,7 @@
 		user.client.statpanel = T.name
 
 /mob/proc/CtrlRightClickOn(atom/A, params)
-	linepoint(A, params)
-	return
+	pointed(A)
 
 /*
 	Misc helpers
@@ -856,7 +864,7 @@
 		eyet.update_icon(src)
 
 /mob/proc/ShiftRightClickOn(atom/A, params)
-//	linepoint(A, params)
+//	pointed(A, params)
 //	A.ShiftRightClick(src)
 	return
 

@@ -1,6 +1,6 @@
 /obj/item/organ/ears
 	name = "ears"
-	icon = 'icons/roguetown/items/surgery.dmi'
+	icon = 'icons/obj/surgery.dmi'
 	icon_state = "ear"
 	desc = ""
 	zone = BODY_ZONE_PRECISE_EARS
@@ -182,3 +182,7 @@
 /obj/item/organ/ears/goblin
 	name = "goblin ears"
 	accessory_type = /datum/sprite_accessory/ears/goblin
+
+/obj/item/organ/ears/harpy
+	name = "harpy ears"
+	desc = "You are a monster."

@@ -101,6 +101,11 @@ body {
 	src: url("aavnic.ttf");
 }
 
+@font-face { 
+  font-family: "Achilles"; 
+  src: url('abyssal.ttf'); 
+}
+
 /* */
 
 em {
@@ -799,81 +804,33 @@ h2.alert {
 	color: #330033;
 }
 
-.sans {
-	font-family: "Comic Sans MS", cursive, sans-serif;
-}
-.papyrus {
-	font-family: "Papyrus", cursive, sans-serif;
-}
-.robot {
-	font-family: "Courier New", cursive, sans-serif;
-}
+.sans					{font-family: "Comic Sans MS", cursive, sans-serif;}
+.papyrus				{font-family: "Papyrus", cursive, sans-serif;}
+.robot					{font-family: "Courier New", cursive, sans-serif;}
 
-.human {
-	font-family: "Honoka Mincho", "Pterra";
-}
-.elf {
-	font-family: "Dauphin", cursive, "Pterra";
-}
-.dwarf {
-	font-family: "MasonAlternate", "Pterra";
-}
-.sandspeak {
-	font-family: "Furqan", "Pterra";
-}
-.delf {
-	font-family: "Dauphin", "Pterra";
-}
-.hellspeak {
-	font-family: "Xaphan", "Pterra";
-	font-size: 110%;
-}
-.undead {
-	font-family: "FriskyVampire", "Pterra";
-}
-.orc {
-	font-family: "Thief by The Riddler", Pterra;
-}
-.beast {
-	font-family: "Thief by The Riddler", Pterra;
-}
-.reptile {
-	font-family: "Kingthings Petrock", Pterra;
-	font-size: 120%;
-}
-.grenzelhoftian {
-	font-family: "Emperialisme", "Pterra";
-	font-size: 120%;
-}
-.kazengunese {
-	font-family: "Yuji Boku", Pterra;
-}
-.orc {
-	font-family: "Thief by The Riddler", "Pterra";
-}
-.beast {
-	font-family: "Thief by The Riddler", "Pterra";
-}
-.reptile {
-	font-family: "Kingthings Petrock", "Pterra";
-	font-size: 120%;
-}
-.otavan {
-	font-family: "Notredame", "Pterra";
-	font-size: 200%;
-}
-.etruscan {
-	font-family: "Feronia", "Pterra";
-	font-size: 100%;
-}
-.gronnic {
-	font-family: "Jorvik Informal", "Pterra";
-	font-size: 100%;
-}
-.aavnic {
-	font-family: "Romeodn", "Pterra";
-	font-size: 100%;
-}
+.orator					{font-family: "Project Sans", "Pterra"; font-size: 100%;}
+.sandwauk 				{font-family: "Persian", "Pterra"; font-size: 140%; letter-spacing: 2px;}
+.human 					{font-family: "Honoka Mincho", "Pterra";}
+.elf					{font-family: "Dauphin", cursive, "Pterra";}
+.dwarf 					{font-family: "MasonAlternate", "Pterra";} 
+.sandspeak 				{font-family: "Furqan", "Pterra";}
+.delf 					{font-family: "Dauphin", "Pterra";}
+.hellspeak				{font-family: "Xaphan", "Pterra"; font-size: 110%}
+.undead					{font-family: "FriskyVampire", "Pterra";}
+.orc					{font-family: "Thief by The Riddler", Pterra;}
+.beast					{font-family: "Thief by The Riddler", Pterra;}
+.reptile				{font-family: "Kingthings Petrock", Pterra; font-size: 120%;}
+.grenzelhoftian			{font-family: "Emperialisme", "Pterra"; font-size: 120%;}
+.kazengunese			{font-family: "Yuji Boku", Pterra;}
+.kazenaccent			{font-family: "Asiana", "Pterra"; font-size: 100%;}
+.orc					{font-family: "Thief by The Riddler", "Pterra";}
+.beast					{font-family: "Thief by The Riddler", "Pterra";}
+.reptile				{font-family: "Kingthings Petrock", "Pterra"; font-size: 120%;}
+.otavan					{font-family: "Notredame", "Pterra"; font-size: 200%;}
+.posh					{font-family: "Parisish", "Pterra"; font-size: 130%;}
+.etruscan				{font-family: "Feronia", "Pterra"; font-size: 100%;}
+.gronnic				{font-family: "Jorvik Informal", "Pterra"; font-size: 100%;}
+.aavnic					{font-family: "Romeodn", "Pterra"; font-size: 100%;}
 
 .torture {
 	color: #42ff20;

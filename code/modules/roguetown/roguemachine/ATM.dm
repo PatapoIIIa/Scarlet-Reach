@@ -11,7 +11,7 @@
 	var/drilled = FALSE
 	var/has_reported = FALSE
 	var/location_tag
-	
+
 /obj/structure/roguemachine/atm/attack_hand(mob/user)
 	if(!ishuman(user))
 		return
@@ -19,11 +19,11 @@
 	if(HAS_TRAIT(user, TRAIT_OUTLAW))
 		to_chat(H, span_warning("The machine rejects you, sensing your status as an outlaw in these lands."))
 		return
-	if(HAS_TRAIT(user, TRAIT_OUTLANDER) && !HAS_TRAIT(user, TRAIT_NOBLE) && !HAS_TRAIT(user, TRAIT_INQUISITION))
+	/*if(HAS_TRAIT(user, TRAIT_OUTLANDER) && !HAS_TRAIT(user, TRAIT_NOBLE) && !HAS_TRAIT(user, TRAIT_INQUISITION))
 		playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 		loc.visible_message(span_warning("The meister turns its nose up at [user]'s hand."))
 		to_chat(user, span_danger("The machine spits on your ignoble foreign blood."))
-		return
+		return*/
 	if(drilled)
 		if(HAS_TRAIT(H, TRAIT_NOBLE))
 			if(!HAS_TRAIT(H, TRAIT_COMMIE))
@@ -37,7 +37,7 @@
 				spawn(5)
 				say("Blueblood for the Freefolk!")
 				playsound(src, 'sound/vo/mobs/ghost/laugh (5).ogg', 100, TRUE)
-				return	
+				return
 	if(H in SStreasury.bank_accounts)
 		var/amt = SStreasury.bank_accounts[H]
 		if(!amt)
@@ -65,6 +65,14 @@
 		coin_amt = round(coin_amt)
 		if(coin_amt < 1)
 			return
+
+		// Check maximum coin limit before deducting balance
+		var/max_coins = 20
+		if(coin_amt > max_coins)
+			to_chat(user, span_warning("Maximum withdrawal limit exceeded. You can only withdraw up to [max_coins] coins at once."))
+			playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
+			return
+
 		amt = SStreasury.bank_accounts[H]
 		if(!Adjacent(user))
 			return
@@ -74,6 +82,7 @@
 		if(!SStreasury.withdraw_money_account(coin_amt*mod, H))
 			playsound(src, 'sound/misc/machineno.ogg', 100, FALSE, -1)
 			return
+		record_round_statistic(STATS_MAMMONS_WITHDRAWN, coin_amt * mod)
 		budget2change(coin_amt*mod, user, selection)
 	else
 		to_chat(user, span_warning("The machine bites my finger."))
@@ -100,23 +109,22 @@
 
 /obj/structure/roguemachine/atm/attackby(obj/item/P, mob/user, params)
 	if(ishuman(user))
-		if(istype(P, /obj/item/roguecoin/aalloy))	
-			return	
-		
+		if(istype(P, /obj/item/roguecoin/aalloy))
+			return
+
 		if(istype(P, /obj/item/roguecoin/inqcoin))
-			return		
+			return
 
 		if(istype(P, /obj/item/roguecoin))
 			var/mob/living/carbon/human/H = user
 			if(H in SStreasury.bank_accounts)
-				SStreasury.generate_money_account(P.get_real_price(), H)
-				if(!HAS_TRAIT(H, TRAIT_NOBLE))
-					var/T = round(P.get_real_price() * SStreasury.tax_value)
-					if(T != 0)
-						SStreasury.total_deposit_tax += T
-						say("Your deposit was taxed [T] mammon.")
-						record_featured_stat(FEATURED_STATS_TAX_PAYERS, H, T)
-						GLOB.scarlet_round_stats[STATS_TAXES_COLLECTED] += T
+				var/list/deposit_results = SStreasury.generate_money_account(P.get_real_price(), H)
+				if(islist(deposit_results))
+					record_round_statistic(STATS_MAMMONS_DEPOSITED, deposit_results[1] - deposit_results[2])
+				if(deposit_results[2] != 0)
+					say("Your deposit was taxed [deposit_results[2]] mammon.")
+					record_featured_stat(FEATURED_STATS_TAX_PAYERS, H, deposit_results[2])
+					record_round_statistic(STATS_TAXES_COLLECTED, deposit_results[2])
 				qdel(P)
 				playsound(src, 'sound/misc/coininsert.ogg', 100, FALSE, -1)
 				return
@@ -157,7 +165,7 @@
 
 /obj/structure/roguemachine/atm/examine(mob/user)
 	. += ..()
-	. += span_info("The current tax rate on deposits is [SStreasury.tax_value * 100] percent. Nobles exempt.")
+	. += span_info("The current tax rate on deposits is [SStreasury.tax_value * 100] percent. Nobles exempt. Non-noble foreigners are taxed at a 50% higher rate.")
 
 
 /obj/structure/roguemachine/atm/proc/drill(obj/structure/roguemachine/atm)
@@ -171,7 +179,7 @@
 		drilling = FALSE
 		has_reported = FALSE
 		return
-	if(mammonsiphoned >199) // The cap variable for siphoning. 
+	if(mammonsiphoned >199) // The cap variable for siphoning.
 		new /obj/item/coveter(loc)
 		loc.visible_message(span_warning("Maximum withdrawal reached! The meister weeps."))
 		playsound(src, 'sound/misc/DrillDone.ogg', 70, TRUE)

@@ -9,20 +9,23 @@
 	allowed_races = RACES_FEARED_UP//Identical to MAA.
 	disallowed_races = list(
 		/datum/species/lamia,
+		/datum/species/harpy,
 	)
+	allowed_patrons = NON_PSYDON_PATRONS
 	allowed_ages = list(AGE_ADULT, AGE_MIDDLEAGED, AGE_OLD)
 	tutorial = "You are the most experienced of the Crown's Soldiery, leading the men-at-arms in maintaining order and attending to threats and crimes below the court's attention. \
 				See to those under your command and fill in the gaps knights leave in their wake. Obey the orders of your Marshal and the Crown."
 	display_order = JDO_SERGEANT
 	whitelist_req = TRUE
 	round_contrib_points = 3
+	social_rank = SOCIAL_RANK_YEOMAN
 
 
 	outfit = /datum/outfit/job/roguetown/sergeant
 	advclass_cat_rolls = list(CTAG_SERGEANT = 20)
 
 	give_bank_account = 50
-	min_pq = 6
+	min_pq = 10
 	max_pq = null
 	cmode_music = 'sound/music/combat_ManAtArms.ogg'
 
@@ -39,9 +42,6 @@
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
 		if(ishuman(L))
-			H.advsetup = 1
-			H.invisibility = INVISIBILITY_MAXIMUM
-			H.become_blind("advsetup")
 			if(istype(H.cloak, /obj/item/clothing/cloak/stabard/surcoat/guard))
 				var/obj/item/clothing/S = H.cloak
 				var/index = findtext(H.real_name, " ")
@@ -65,6 +65,9 @@
 	armor = /obj/item/clothing/suit/roguetown/armor/plate/scale
 	head = /obj/item/clothing/head/roguetown/helmet/sallet/visored
 	id = /obj/item/scomstone/garrison
+	beltl = /obj/item/quiver/bolts
+	backl = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow
+	beltr = /obj/item/rogueweapon/sword/sabre
 
 //Rare-ish anti-armor two hander sword. Kinda alternative of a bastard sword type. Could be cool.
 /datum/advclass/sergeant/sergeant
@@ -120,7 +123,8 @@
 		/obj/item/rogueweapon/scabbard/sheath = 1,
 	)
 	H.adjust_blindness(-3)
-	var/weapons = list("Rhomphaia","Flail & Shield","Halberd","Sabre & Crossbow")	//Bit more unique than footsman, you are a jack-of-all-trades + slightly more 'elite'.
+	//triage fix - loadout is busted, needs fix. See https://github.com/Scarlet-Reach/Scarlet-Reach/issues/1226
+/*	var/weapons = list("Rhomphaia","Flail & Shield","Halberd","Sabre & Crossbow")	//Bit more unique than footsman, you are a jack-of-all-trades + slightly more 'elite'.
 	var/weapon_choice = input("Choose your weapon.", "TAKE UP ARMS") as anything in weapons
 	H.set_blindness(0)
 	switch(weapon_choice)
@@ -138,7 +142,7 @@
 			beltr = /obj/item/quiver/bolts
 			backl = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow
 			r_hand = /obj/item/rogueweapon/sword/sabre
-			l_hand = /obj/item/rogueweapon/scabbard/sword
+			l_hand = /obj/item/rogueweapon/scabbard/sword */
 
 /obj/effect/proc_holder/spell/invoked/order
 	name = ""

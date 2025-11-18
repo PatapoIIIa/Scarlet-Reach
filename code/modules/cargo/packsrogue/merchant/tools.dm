@@ -102,12 +102,27 @@
 /datum/supply_pack/rogue/tools/prlegl
 	name = "Prosthetic Wood Leg (L)"
 	cost = 15
-	contains = /obj/item/bodypart/l_leg/prosthetic
+	contains = /obj/item/bodypart/l_leg/prosthetic/woodleft
 
 /datum/supply_pack/rogue/tools/prlegr
 	name = "Prosthetic Wood Leg (R)"
 	cost = 15
 	contains = /obj/item/bodypart/r_leg/prosthetic
+
+/datum/supply_pack/rogue/tools/huntingknife
+	name = "Hunting Knife"
+	cost = 10
+	contains = list(/obj/item/rogueweapon/huntingknife,)
+
+/datum/supply_pack/rogue/tools/ironscissors
+	name = "Iron Scissors"
+	cost = 10
+	contains = list(/obj/item/rogueweapon/huntingknife/scissors,)
+
+/datum/supply_pack/rogue/tools/chisel
+	name = "Chisel"
+	cost = 10
+	contains = list(/obj/item/rogueweapon/chisel = 1,)
 
 /datum/supply_pack/rogue/tools/hoe
 	name = "Hoe"
@@ -171,6 +186,11 @@
 	name = "Hammer"
 	cost = 35
 	contains = list(/obj/item/rogueweapon/hammer/iron)
+
+/datum/supply_pack/rogue/tools/tongs
+	name = "Tongs"
+	cost = 35
+	contains = list(/obj/item/rogueweapon/tongs)
 
 /datum/supply_pack/rogue/tools/fryingpan
 	name = "Frying Pan"

@@ -9,14 +9,16 @@
 	allowed_sexes = list(MALE, FEMALE) //same as town guard
 	allowed_races = RACES_ALL_KINDS//But. Actually not. Only Mercenary and Ex-Spy allow All Races.
 	tutorial = "You've known combat your entire life. There isn't a way to kill a man you havent practiced in the tapestries of war itself. You wouldn't call yourself a hero--those belong to the men left rotting in the fields where you honed your ancient trade. You don't sleep well at night anymore, you don't like remembering what you've had to do to survive. Trading adventure for stable pay was the only logical solution, and maybe someday you'll get to lay down the blade and rest your weary body..."
+	allowed_patrons = NON_PSYDON_PATRONS
 	allowed_ages = list(AGE_MIDDLEAGED, AGE_OLD)
 	advclass_cat_rolls = list(CTAG_VETERAN = 20)
 	display_order = JDO_VET
 	whitelist_req = TRUE
 	give_bank_account = 35
-	min_pq = 5 //Should...probably actually be a veteran of at least a few weeks before trying to teach others
+	min_pq = 10 //Should...probably actually be a veteran of at least a few weeks before trying to teach others
 	max_pq = null
 	round_contrib_points = 2
+	social_rank = SOCIAL_RANK_YEOMAN
 
 	cmode_music = 'sound/music/combat_veteran.ogg'
 
@@ -36,9 +38,6 @@
 	. = ..()
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 		if(istype(H.cloak, /obj/item/clothing/cloak/half/vet))
 			var/obj/item/clothing/S = H.cloak
 			var/index = findtext(H.real_name, " ")
@@ -301,7 +300,7 @@
 			head = /obj/item/clothing/head/roguetown/grenzelhofthat
 			armor = /obj/item/clothing/suit/roguetown/armor/plate/half
 			pants = /obj/item/clothing/under/roguetown/heavy_leather_pants/grenzelpants
-			shoes = /obj/item/clothing/shoes/roguetown/grenzelhoft
+			shoes = /obj/item/clothing/shoes/roguetown/boots/grenzelhoft
 			gloves = /obj/item/clothing/gloves/roguetown/angle/grenzelgloves
 			beltl = /obj/item/rogueweapon/sword/short
 			beltr = /obj/item/storage/keyring/guardcastle

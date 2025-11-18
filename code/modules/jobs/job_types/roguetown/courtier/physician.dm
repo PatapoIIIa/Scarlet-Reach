@@ -21,19 +21,12 @@
 	round_contrib_points = 3
 	cmode_music = 'sound/music/combat_physician.ogg'
 	advclass_cat_rolls = list(CTAG_COURTPHYS = 2)
+	social_rank = SOCIAL_RANK_YEOMAN
 
 	job_traits = list(TRAIT_NOSTINK, TRAIT_EMPATH)
 	job_subclasses = list(
 		/datum/advclass/physician
 	)
-
-/datum/job/roguetown/physician/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/physician
 	name = "Court Physician"

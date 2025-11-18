@@ -18,7 +18,7 @@
 /datum/surgery_step/add_lamian_tail
 	name = "Transplant lamian tail"
 	implements = list(
-		/obj/item/bodypart/lamian_tail = 80, 
+		/obj/item/bodypart/lamian_tail = 80,
 	)
 	target_mobtypes = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
 	time = 3 SECONDS
@@ -27,6 +27,7 @@
 	requires_bodypart_type = NONE
 	skill_min = SKILL_LEVEL_JOURNEYMAN
 	skill_median = SKILL_LEVEL_EXPERT
+	visible_required_skill = TRUE
 
 /datum/surgery_step/add_lamian_tail/validate_bodypart(mob/user, mob/living/carbon/target, obj/item/bodypart/bodypart, target_zone)
 	var/obj/item/bodypart/left_leg = target.get_bodypart(BODY_ZONE_L_LEG)
@@ -53,9 +54,9 @@
 			to_chat(user, span_warning("This one has pledged a vow to Necra. The sinews reject the false flesh. It requires their own flesh and blood."))
 			return FALSE
 
-	display_results(user, target, span_notice("I begin to replace [target]'s [parse_zone(target_zone)] with [bodypart]..."),
-		span_notice("[user] begins to replace [target]'s [parse_zone(target_zone)] with [bodypart]."),
-		span_notice("[user] begins to replace [target]'s [parse_zone(target_zone)]."))
+	display_results(user, target, span_notice("I begin to attach [bodypart] to [target], back to where [target.p_their()] [parse_zone(target_zone)] used to be..."),
+		span_notice("[user] begins to attach [bodypart] to [target], back to where [target.p_their()] [parse_zone(target_zone)] used to be..."),
+		span_notice("[user] begins to attach [bodypart] to [target], back to where [target.p_their()] [parse_zone(target_zone)] used to be..."))
 	return TRUE
 
 /datum/surgery_step/add_lamian_tail/success(mob/user, mob/living/target, target_zone, obj/item/bodypart/lamian_tail/bodypart, datum/intent/intent)
@@ -63,9 +64,9 @@
 
 	if(bodypart.attach_limb(target) && bodypart.attach_wound)
 		bodypart.add_wound(bodypart.attach_wound)
-	display_results(user, target, span_notice("I succeed transplanting [target]'s [parse_zone(target_zone)]."),
-		span_notice("[user] successfully transplants [target]'s [parse_zone(target_zone)] with [bodypart]!"),
-		span_notice("[user] successfully transplants [target]'s [parse_zone(target_zone)]!"))
+	display_results(user, target, span_notice("I succeed attaching [bodypart] to [target]!"),
+		span_notice("[user] successfully attaches [bodypart] to [target]!"),
+		span_notice("[user] successfully attaches [bodypart] to [target]!"))
 	return TRUE
 
 /datum/surgery_step/add_prosthetic
@@ -87,6 +88,7 @@
 	requires_bodypart_type = NONE
 	skill_min = SKILL_LEVEL_JOURNEYMAN
 	skill_median = SKILL_LEVEL_EXPERT
+	visible_required_skill = TRUE
 
 /datum/surgery_step/add_prosthetic/tool_check(mob/user, obj/item/tool)
 	// Use Implant taur instead, which actually works correctly
@@ -119,19 +121,19 @@
 		if(istype(bodypart, /obj/item/bodypart/head/dullahan))
 			to_chat(user, span_warning("The head is refusing the body."))
 			return FALSE
-			
-	display_results(user, target, span_notice("I begin to replace [target]'s [parse_zone(target_zone)] with [tool]..."),
-		span_notice("[user] begins to replace [target]'s [parse_zone(target_zone)] with [tool]."),
-		span_notice("[user] begins to replace [target]'s [parse_zone(target_zone)]."))
+
+	display_results(user, target, span_notice("I begin to attach [bodypart] to [target], back to where [target.p_their()] [parse_zone(target_zone)] used to be..."),
+		span_notice("[user] begins to attach [bodypart] to [target], back to where [target.p_their()] [parse_zone(target_zone)] used to be..."),
+		span_notice("[user] begins to attach [bodypart] to [target], back to where [target.p_their()] [parse_zone(target_zone)] used to be..."))
 	return TRUE
 
 /datum/surgery_step/add_prosthetic/success(mob/user, mob/living/target, target_zone, obj/item/tool, datum/intent/intent)
 	var/obj/item/bodypart/bodypart = tool
 	if(bodypart.attach_limb(target) && bodypart.attach_wound)
 		bodypart.add_wound(bodypart.attach_wound)
-	display_results(user, target, span_notice("I succeed transplanting [target]'s [parse_zone(target_zone)]."),
-		span_notice("[user] successfully transplants [target]'s [parse_zone(target_zone)] with [tool]!"),
-		span_notice("[user] successfully transplants [target]'s [parse_zone(target_zone)]!"))
+	display_results(user, target, span_notice("I succeed attaching [bodypart] to [target]!"),
+		span_notice("[user] successfully attaches [bodypart] to [target]!"),
+		span_notice("[user] successfully attaches [bodypart] to [target]!"))
 	return TRUE
 
 /datum/surgery/prosthetic_removal

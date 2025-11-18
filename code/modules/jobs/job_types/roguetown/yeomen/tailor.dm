@@ -19,19 +19,12 @@
 	min_pq = 0
 	max_pq = null
 	round_contrib_points = 3
+	social_rank = SOCIAL_RANK_YEOMAN
 
 	advclass_cat_rolls = list(CTAG_TAILOR = 2)
 	job_subclasses = list(
 		/datum/advclass/tailor
 	)
-
-/datum/job/roguetown/tailor/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/tailor
 	name = "Tailor"

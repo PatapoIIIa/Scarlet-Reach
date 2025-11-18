@@ -39,13 +39,28 @@
 	hitsound = 'sound/blank.ogg'
 	aoe_range = 0
 
+/obj/projectile/magic/aoe/fireball/rogue/fireball_noc
+	name = "luaflame"
+	damage = 80
+	damage_type = BURN
+	npc_damage_mult = 3 // STRAIGHTEST SHOOTER, FUCK YEAH, GYATDAMN!!
+	accuracy = 60 // Base accuracy is lower for burn projectiles because they bypass armor
+	icon_state = "fireball_noc"
+	light_color = "#18313b"
+	light_outer_range =  3
 
 /obj/projectile/magic/aoe/fireball/rogue/on_hit(target)
 	. = ..()
-	if(ismob(target))
-		var/mob/M = target
+	if(isliving(target))
+		var/mob/living/M = target
 		if(M.anti_magic_check())
 			visible_message(span_warning("[src] fizzles on contact with [target]!"))
 			playsound(get_turf(target), 'sound/magic/magic_nulled.ogg', 100)
 			qdel(src)
 			return BULLET_ACT_BLOCK
+		else
+			M.adjust_fire_stacks(2) //1 pats to put it out
+			visible_message(span_warning("[src] ignites [target]!"))
+			M.ignite_mob()
+	return FALSE
+

@@ -20,6 +20,7 @@
 	round_contrib_points = 2
 	advjob_examine = TRUE
 	cmode_music = 'sound/music/combat_bard.ogg'
+	social_rank = SOCIAL_RANK_PEASANT
 
 	job_subclasses = list(
 		/datum/advclass/servant/servant,
@@ -27,17 +28,8 @@
 		/datum/advclass/servant/butler
 	)
 
-
-/datum/job/roguetown/servant/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	. = ..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup") // Classes are for aesthetic clothing only, mechanically they're identical.
-
 /datum/advclass/servant
-	traits_applied = list(TRAIT_CICERONE)
+	traits_applied = list(TRAIT_CICERONE, TRAIT_ROYALSERVANT)
 
 /datum/advclass/servant/servant
 	name = "Servant"

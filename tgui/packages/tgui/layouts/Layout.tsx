@@ -66,6 +66,7 @@ function LayoutContent(props: ContentProps) {
         'Layout__content',
         scrollable && 'Layout__content--scrollable',
         className,
+
         computeBoxClassName(rest),
       ])}
       ref={node}

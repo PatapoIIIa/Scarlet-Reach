@@ -41,6 +41,11 @@
 	anvilrepair = /datum/skill/craft/armorsmithing
 //	block2add = FOV_BEHIND
 
+/obj/item/clothing/mask/rogue/spectacles/clear
+	name = "clear spectacles"
+	desc = "Spectacles with modified lenses, so people can see your pretty eyes."
+	icon_state = "glassesclear"
+
 /obj/item/clothing/mask/rogue/spectacles/inq
 	name = "otavan nocshade lens-pair"
 	icon_state = "bglasses"
@@ -94,6 +99,11 @@
 			return
 		lensmoved = FALSE
 
+/obj/item/clothing/mask/rogue/spectacles/black
+	name = "nocshade lens-pair"
+	icon_state = "sglasses"
+	desc = "Darkened pectacles with modified lenses, so people can see your pretty eyes."
+
 /obj/item/clothing/mask/rogue/spectacles/golden
 	name = "golden spectacles"
 	icon_state = "goggles"
@@ -104,6 +114,36 @@
 	resistance_flags = FIRE_PROOF
 	body_parts_covered = EYES
 	anvilrepair = /datum/skill/craft/armorsmithing
+	var/active_item = FALSE
+
+/obj/item/clothing/mask/rogue/spectacles/golden/equipped(mob/user, slot)
+	..()
+	if(active_item)
+		return
+	else if(slot == SLOT_WEAR_MASK || slot == SLOT_HEAD)
+		if (user.get_skill_level(/datum/skill/craft/engineering) >= 2)
+			ADD_TRAIT(user, TRAIT_ENGINEERING_GOGGLES, "[type]")
+			user.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/engineeranalyze)
+			to_chat(user, span_notice("Time to build"))
+			active_item = TRUE
+			return
+		else 
+			to_chat(user, span_notice("I can't understand these words and numbers before my eyes"))
+			return
+	else
+		return
+
+
+
+
+
+/obj/item/clothing/mask/rogue/spectacles/golden/dropped(mob/user, slot)
+	..()
+	if(active_item)
+		active_item = FALSE
+		REMOVE_TRAIT(user, TRAIT_ENGINEERING_GOGGLES, "[type]")
+		user.mind.RemoveSpell(new /obj/effect/proc_holder/spell/invoked/engineeranalyze)
+		to_chat(user, span_notice("Time to stop working"))
 
 /obj/item/clothing/mask/rogue/spectacles/Initialize()
 	..()
@@ -368,7 +408,7 @@
 		ADD_TRAIT(user, TRAIT_PACIFISM, "cursedmask")
 		ADD_TRAIT(user, TRAIT_SPELLCOCKBLOCK, "cursedmask")
 		if(HAS_TRAIT(user, TRAIT_RITUALIST))
-			user.apply_status_effect(/datum/status_effect/debuff/ritesexpended)
+			user.apply_status_effect(/datum/status_effect/debuff/ritesexpended_high)
 		var/timer = 5 MINUTES //Base timer is 5 minutes, additional time added per bounty amount
 
 		if(bounty_amount >= 10)
@@ -408,7 +448,6 @@
 	name = "ancient mask"
 	desc = "A mask forged of ancient alloys. Aeon's grasp has been lifted from its form."
 	icon_state = "ancientmask"
-
 
 /obj/item/clothing/mask/rogue/facemask/steel/hound
 	name = "steel hound mask"
@@ -456,13 +495,35 @@
 
 /obj/item/clothing/mask/rogue/facemask/yoruku_oni
 	name = "oni mask"
-	desc = "A wood mask carved in the visage of demons said to stalk the mountains of Kazengun."
+	desc = "A steel mask in the visage of demons said to stalk the mountains of Kazengun."
 	icon_state = "oni"
 
 /obj/item/clothing/mask/rogue/facemask/yoruku_kitsune
 	name = "kitsune mask"
+	desc = "A steel mask in the visage of the fox spirits said to ply their tricks in the forests of Kazengun."
+	icon_state = "kitsune"
+
+/obj/item/clothing/mask/rogue/facemask/cheap_oni
+	name = "handcarved oni mask"
+	desc = "A wood mask carved in the visage of demons said to stalk the mountains of Kazengun. This one seems to be carved out of wood and painted."
+	icon_state = "oni"
+	flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
+	slot_flags = ITEM_SLOT_MASK|ITEM_SLOT_HIP
+	armor = ARMOR_PADDED_BAD
+	prevent_crits = list(BCLASS_CUT, BCLASS_BLUNT)
+	armor = list("blunt" = 10, "slash" = 10, "stab" = 10, "piercing" = 10, "fire" = 0, "acid" = 0)
+	anvilrepair = /datum/skill/craft/carpentry
+
+/obj/item/clothing/mask/rogue/facemask/cheap_kitsune
+	name = "handcarved kitsune mask"
 	desc = "A wood mask carved in the visage of the fox spirits said to ply their tricks in the forests of Kazengun."
 	icon_state = "kitsune"
+	flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
+	slot_flags = ITEM_SLOT_MASK|ITEM_SLOT_HIP
+	armor = ARMOR_PADDED_BAD
+	prevent_crits = list(BCLASS_CUT, BCLASS_BLUNT)
+	armor = list("blunt" = 10, "slash" = 10, "stab" = 10, "piercing" = 10, "fire" = 0, "acid" = 0)
+	anvilrepair = /datum/skill/craft/carpentry
 
 /obj/item/clothing/mask/rogue/shepherd
 	name = "halfmask"
@@ -490,7 +551,6 @@
 	body_parts_covered = FACE|EYES|MOUTH
 	slot_flags = ITEM_SLOT_MASK|ITEM_SLOT_HIP
 	sewrepair = TRUE
-
 
 /obj/item/clothing/mask/rogue/skullmask
 	name = "skull mask"
@@ -534,8 +594,13 @@
 	desc = "Runes and wards, meant for daemons; the gold has somehow rusted in unnatural, impossible agony. The most prominent of these etchings is in the shape of the Naledian psycross. Armored to protect the wearer's face."
 	max_integrity = 100
 	armor = ARMOR_MASK_METAL
+	flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
+	adjustable = CAN_CADJUST
 	prevent_crits = list(BCLASS_CUT, BCLASS_STAB, BCLASS_CHOP, BCLASS_BLUNT)
 	sellprice = 0
+
+/obj/item/clothing/mask/rogue/lordmask/naledi/ComponentInitialize()
+	AddComponent(/datum/component/adjustable_clothing, NECK, null, null, 'sound/foley/equip/rummaging-03.ogg', null, (UPD_HEAD|UPD_MASK))	//Standard mask
 
 /obj/item/clothing/mask/rogue/exoticsilkmask
 	name = "exotic silk mask"

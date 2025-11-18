@@ -137,8 +137,6 @@
 		if(rand(1,20)==20)
 			if(newletter==" ")
 				newletter="...huuuhhh..."
-			if(newletter==".")
-				newletter=" *BURP*."
 		switch(rand(1,20))
 			if(1)
 				newletter+="'"
@@ -555,7 +553,6 @@
 	if(hud_used)
 		hud_used.quad_intents?.switch_intent(input)
 		hud_used.give_intent?.switch_intent(input)
-	givingto = null
 
 /mob/verb/def_intent_change(input as num)
 	set name = "def-change"
@@ -875,13 +872,6 @@
 		to_chat(M, "There were no ghosts willing to take control.")
 		message_admins("No ghosts were willing to take control of [ADMIN_LOOKUPFLW(M)])")
 		return FALSE
-
-///Is the mob a flying mob
-/mob/proc/is_flying(mob/M = src)
-	if(M.movement_type & FLYING)
-		return 1
-	else
-		return 0
 
 ///Clicks a random nearby mob with the source from this mob
 /mob/proc/click_random_mob()

@@ -82,7 +82,7 @@
 	name = "master's rod"
 	desc = "Bend the knee. Can't be used outside of the manor."
 	icon_state = "scepter"
-	icon = 'icons/roguetown/weapons/32.dmi'
+	icon = 'icons/roguetown/weapons/blunt32.dmi'
 	sharpness = IS_BLUNT
 	//dropshrink = 0.75
 	wlength = WLENGTH_NORMAL
@@ -266,7 +266,7 @@
 	name = "katar"
 	desc = "A blade that sits above the users fist. Commonly used by those proficient at unarmed fighting"
 	icon_state = "katar"
-	icon = 'icons/roguetown/weapons/32.dmi'
+	icon = 'icons/roguetown/weapons/daggers32.dmi'
 	gripsprite = FALSE
 	wlength = WLENGTH_SHORT
 	w_class = WEIGHT_CLASS_SMALL
@@ -299,6 +299,7 @@
 /obj/item/rogueweapon/katar/abyssor
 	name = "barotrauma"
 	desc = "A gift from a creature of the sea. The claw is sharpened to a wicked edge."
+	icon = 'icons/roguetown/weapons/misc32.dmi'
 	icon_state = "abyssorclaw"
 	force = 27	//Its thrust will be able to pen 80 stab armor if the wielder has 17 STR. (With softcap)
 	max_integrity = 120
@@ -325,26 +326,48 @@
 	name = "psydonian katar"
 	desc = "An exotic weapon taken from the hands of wandering monks, an esoteric design to the Otavan Holy See. Special care was taken into account towards the user's knuckles: silver-tipped steel from tip to edges, and His holy cross reinforcing the heart of the weapon, with curved shoulders to allow its user to deflect incoming blows - provided they lead it in with the blade."
 	icon_state = "psykatar"
+	force = 19
+	wdefense = 3
+	is_silver = TRUE
+	smeltresult = /obj/item/ingot/silver
 
 /obj/item/rogueweapon/katar/psydon/ComponentInitialize()
-	. = ..()							//+3 force, +50 int, +1 def, make silver
-	AddComponent(/datum/component/psyblessed, FALSE, 3, FALSE, 50, 1, TRUE)
+	AddComponent(\
+		/datum/component/silverbless,\
+		pre_blessed = BLESSING_NONE,\
+		silver_type = SILVER_PSYDONIAN,\
+		added_force = 0,\
+		added_blade_int = 0,\
+		added_int = 50,\
+		added_def = 2,\
+	)
 
 /obj/item/rogueweapon/knuckles/psydon
 	name = "psydonian knuckles"
 	desc = "A simple piece of harm molded in a holy mixture of steel and silver, finished with three stumps - Psydon's crown - to crush the heretics' garments and armor into smithereens."
 	icon_state = "psyknuckle"
+	force = 17
+	wdefense = 5
+	is_silver = TRUE
+	smeltresult = /obj/item/ingot/silver
 
 /obj/item/rogueweapon/knuckles/psydon/ComponentInitialize()
-	. = ..()							//+3 force, +50 int, +1 def, make silver
-	AddComponent(/datum/component/psyblessed, FALSE, 3, FALSE, 50, 1, TRUE)
+	AddComponent(\
+		/datum/component/silverbless,\
+		pre_blessed = BLESSING_NONE,\
+		silver_type = SILVER_PSYDONIAN,\
+		added_force = 0,\
+		added_blade_int = 0,\
+		added_int = 50,\
+		added_def = 2,\
+	)
 
 /obj/item/rogueweapon/knuckles
 	name = "steel knuckles"
 	desc = "A mean looking pair of steel knuckles."
 	force = 22
 	possible_item_intents = list(/datum/intent/knuckles/strike,/datum/intent/knuckles/smash)
-	icon = 'icons/roguetown/weapons/32.dmi'
+	icon = 'icons/roguetown/weapons/blunt32.dmi'
 	icon_state = "steelknuckle"
 	gripsprite = FALSE
 	wlength = WLENGTH_SHORT
@@ -378,7 +401,7 @@
 	desc = "A mean looking pair of bronze knuckles. Mildly heavier than it's steel counterpart, making it a solid defensive option, if less wieldy."
 	force = 20
 	possible_item_intents = list(/datum/intent/knuckles/strike,/datum/intent/knuckles/smash)
-	icon = 'icons/roguetown/weapons/32.dmi'
+	icon = 'icons/roguetown/weapons/blunt32.dmi'
 	icon_state = "bronzeknuckle"
 	gripsprite = FALSE
 	wlength = WLENGTH_SHORT
@@ -581,7 +604,7 @@
 			if(isliving(target))
 				var/mob/living/M = target
 				M.adjust_fire_stacks(5)
-				M.IgniteMob()
+				M.ignite_mob()
 				ignited = TRUE
 			if(ignited && single_use)
 				is_active = FALSE
@@ -651,7 +674,7 @@
 	possible_item_intents = list(/datum/intent/pick)
 	gripped_intents = list(/datum/intent/pick, /datum/intent/stab/militia)
 	icon_state = "milpick"
-	icon = 'icons/roguetown/weapons/32.dmi'
+	icon = 'icons/roguetown/weapons/misc32.dmi'
 	sharpness = IS_SHARP
 	wlength = WLENGTH_SHORT
 	max_blade_int = 120
@@ -676,6 +699,44 @@
 	smeltresult = /obj/item/ingot/steel
 	wdefense = 5
 	wbalance = WBALANCE_HEAVY
+
+/obj/item/rogueweapon/pick/heavy
+	name = "heavy warpick"
+	desc = "A well-made and refined way to split a knight's helm or hardened ground in two, properly balanced to ensure effortless splitting. After all, both tend to rupture with sobering ease when introduced to a sharpened pickend."
+	icon_state = "warpick"
+	possible_item_intents = list(/datum/intent/pick/heavy, /datum/intent/mace/strike)
+	gripped_intents = list(/datum/intent/pick/heavy, /datum/intent/mace/strike, /datum/intent/stab/militia)
+	force = 20
+	force_wielded = 25
+	max_blade_int = 150
+	max_integrity = 500
+	associated_skill = /datum/skill/combat/axes
+	anvilrepair = /datum/skill/craft/weaponsmithing
+	smeltresult = /obj/item/ingot/steel
+	wdefense = 6
+	wbalance = WBALANCE_HEAVY
+
+
+/obj/item/rogueweapon/pick/heavy/steel
+	name = "heavy steel warpick"
+	desc = "A well-made and refined way to split a knight's helm or hardened ground in two, properly balanced to ensure effortless splitting. After all, both tend to rupture with sobering ease when introduced to a sharpened pickend. This one is honed out of steel parts."
+	icon_state = "steelwarpick"
+	force = 25
+	force_wielded = 30
+	max_blade_int = 200
+	max_integrity = 600
+	wdefense = 7
+
+/obj/item/rogueweapon/pick/heavy/steel/dwarf
+	name = "heavy dwarven warpick"
+	desc = "A hardy repurposed dwarven mining pick. Made to handle the dwellers above and below, both clad in rock and forged rock."
+	icon_state = "dwarpick"
+	force = 27 //10% More damage
+	force_wielded = 33 // 10% More damage
+	max_blade_int = 250 // Bit more Blade Integrity. Needs less sharpens.
+	max_integrity = 600
+	wdefense = 7
+
 
 /obj/item/rogueweapon/sword/falchion/militia
 	name = "maciejowski"

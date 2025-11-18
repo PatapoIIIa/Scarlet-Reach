@@ -24,10 +24,26 @@
 				if(do_after(user, 50, needhand = 1, target = src))
 					facial_hairstyle = "None"
 					update_hair()
-					GLOB.scarlet_round_stats[STATS_BEARDS_SHAVED]++
+					record_round_statistic(STATS_BEARDS_SHAVED)
 					if(dna?.species)
 						if(dna.species.id == "dwarf")
 							add_stress(/datum/stressevent/dwarfshaved)
+				else
+					held_item.melee_attack_chain(user, src, params)
+	if(held_item && (user.zone_selected == BODY_ZONE_CHEST))
+		if(held_item.get_sharpness() && held_item.wlength == WLENGTH_SHORT)
+			if(istype(src.getorganslot(ORGAN_SLOT_WINGS), /obj/item/organ/wings/moth))
+				var/obj/item/organ/selected_organ = src.getorganslot(ORGAN_SLOT_WINGS)
+				if(user == src)
+					user.visible_message("<span class='danger'>[user] starts to cut off [user.p_their()] wings with [held_item].</span>")
+				else
+					user.visible_message("<span class='danger'>[user] starts to cut off [src]'s wings with [held_item].</span>")
+				if(do_after(user, 50, needhand = 1, target = src))
+					playsound(get_turf(src), 'sound/combat/hits/bladed/smallslash (1).ogg', 80, TRUE, soundping = TRUE)
+					src.emote("scream")
+					add_stress(/datum/stressevent/wingcut)
+					selected_organ.Remove(src)
+					selected_organ.forceMove(src.drop_location())
 				else
 					held_item.melee_attack_chain(user, src, params)
 		return
@@ -90,8 +106,8 @@
 	var/obj/item/bodypart/affecting
 	var/dam = levels * rand(10,50)
 	add_stress(/datum/stressevent/felldown)
-	GLOB.scarlet_round_stats[STATS_MOAT_FALLERS]-- // If you get your ankles broken you fall. This makes sure only those that DIDN'T get damage get counted.
-	GLOB.scarlet_round_stats[STATS_ANKLES_BROKEN]++
+	record_round_statistic(STATS_MOAT_FALLERS, -1)
+	record_round_statistic(STATS_ANKLES_BROKEN)
 	var/chat_message
 	switch(rand(1,4))
 		if(1)
@@ -134,6 +150,7 @@
 	QDEL_NULL(sexcon)
 	STOP_PROCESSING(SShumannpc, src)
 	QDEL_NULL(physiology)
+	QDEL_NULL(sunder_light_obj)
 	GLOB.human_list -= src
 	return ..()
 

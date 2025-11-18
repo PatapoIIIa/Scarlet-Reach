@@ -105,6 +105,9 @@
 	return ..()
 
 /datum/status_effect/incapacitating/sleeping/tick()
+	if(owner.health < owner.crit_threshold) // no sleep-healing while we're dying.
+		return
+
 	if(owner.maxHealth)
 		var/health_ratio = owner.health / owner.maxHealth
 		var/healing = -0.2
@@ -127,11 +130,18 @@
 			carbon_owner.handle_dreams()
 			if((prob(10) && owner.health > owner.crit_threshold) && !HAS_TRAIT(owner, TRAIT_NOBREATH))
 				owner.emote("snore")
+	if(isharpy(owner))
+		var/obj/item/clothing/suit/roguetown/armor/skin_armor/harpy_skin = human_owner.skin_armor
+		if(harpy_skin.obj_integrity < harpy_skin.max_integrity)
+			harpy_skin.obj_integrity += 10
+			to_chat(human_owner, "I can feel the skin on my feet mend...")
+		else if((harpy_skin.obj_integrity >= harpy_skin.max_integrity) && harpy_skin.obj_broken)
+			harpy_skin.obj_broken = FALSE
 
 /atom/movable/screen/alert/status_effect/asleep
 	name = "Asleep"
 	desc = ""
-	icon_state = "asleep"
+	icon_state = "sleeping"
 
 //STASIS
 /datum/status_effect/incapacitating/stasis
@@ -274,11 +284,11 @@
 
 /obj/effect/temp_visual/curse
 	icon_state = "curse"
-
-/obj/effect/temp_visual/curse/Initialize()
+/*
+obj/effect/temp_visual/curse/Initialize()
 	. = ..()
 	deltimer(timerid)
-
+*/ //Deleted by Freestyle during AP PR #4392. Commented out in case it breaks something and/or was necessary for the PR
 
 /datum/status_effect/gonbolaPacify
 	id = "gonbolaPacify"

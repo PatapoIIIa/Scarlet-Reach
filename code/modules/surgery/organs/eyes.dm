@@ -470,3 +470,4 @@
 	eyes.update_accessory_colors()
 	if(eyes.owner)
 		eyes.owner.update_body_parts(TRUE)
+

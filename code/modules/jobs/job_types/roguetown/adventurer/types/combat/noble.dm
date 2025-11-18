@@ -56,7 +56,7 @@
 
 /datum/advclass/noble/knighte
 	name = "Knight Errant"
-	tutorial = "You are a knight from a distant land, a scion of a noble house visiting Azuria for one reason or another."
+	tutorial = "You are a knight from a distant land, a scion of a noble house visiting Scarlet Reach for one reason or another."
 	outfit = /datum/outfit/job/roguetown/adventurer/knighte
 
 	traits_applied = list(TRAIT_NOBLE, TRAIT_HEAVYARMOR)
@@ -85,7 +85,7 @@
 
 /datum/outfit/job/roguetown/adventurer/knighte/pre_equip(mob/living/carbon/human/H)
 	..()
-	to_chat(H, span_warning("You are a knight from a distant land, a scion of a noble house visiting Azuria for one reason or another."))
+	to_chat(H, span_warning("You are a knight from a distant land, a scion of a noble house visiting Scarlet Reach for one reason or another."))
 	var/helmets = list(
 		"Pigface Bascinet" 	= /obj/item/clothing/head/roguetown/helmet/bascinet/pigface,
 		"Guard Helmet"		= /obj/item/clothing/head/roguetown/helmet/heavy/guard,
@@ -107,7 +107,8 @@
 		"Brigandine"		= /obj/item/clothing/suit/roguetown/armor/brigandine,
 		"Coat of Plates"	= /obj/item/clothing/suit/roguetown/armor/brigandine/coatplates,
 		"Steel Cuirass"		= /obj/item/clothing/suit/roguetown/armor/plate/half,
-		)
+		"Fluted Cuirass"	= /obj/item/clothing/suit/roguetown/armor/plate/half/fluted,		
+	)
 	var/armorchoice = input("Choose your armor.", "TAKE UP ARMOR") as anything in armors
 	armor = armors[armorchoice]
 
@@ -162,6 +163,7 @@
 	name = "Squire Errant"
 	tutorial = "You are a squire who has traveled far in search of a master to train you and a lord to knight you."
 	outfit = /datum/outfit/job/roguetown/adventurer/squire
+	subclass_social_rank = SOCIAL_RANK_PEASANT
 
 	traits_applied = list(TRAIT_SQUIRE_REPAIR)
 	subclass_stats = list(

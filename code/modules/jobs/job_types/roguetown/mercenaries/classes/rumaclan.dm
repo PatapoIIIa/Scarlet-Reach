@@ -2,7 +2,7 @@
 	name = "Ruma Clan Kyodai"
 	tutorial = "A band of foreign Kazengites. The Ruma Clan isn't an organized group of soldiers - rather a loose collection of fighters, with strange tattoos that act as armor."
 	allowed_sexes = list(MALE, FEMALE)
-	allowed_races = NON_DWARVEN_RACE_TYPES //no dwarf sprites
+	allowed_races = NON_DWARVEN_NON_GOLEM_RACE_TYPES //no dwarf sprites
 	outfit = /datum/outfit/job/roguetown/mercenary/rumaclan
 	subclass_languages = list(/datum/language/kazengunese)
 	class_select_category = CLASS_CAT_KAZENGUN
@@ -33,6 +33,7 @@
 /datum/outfit/job/roguetown/mercenary/rumaclan/pre_equip(mob/living/carbon/human/H)
 	..()
 	to_chat(H, span_warning("You are relatively versed in the art of \"swinging a sword until enemy death.\" - You would gladly take up most jobs for money, or a chance to cut loose."))
+	head = /obj/item/clothing/head/roguetown/mentorhat
 	belt = /obj/item/storage/belt/rogue/leather
 	beltr = /obj/item/rogueweapon/scabbard/sword/kazengun/steel
 	beltl = /obj/item/rogueweapon/sword/sabre/mulyeog/rumahench
@@ -47,6 +48,8 @@
 		/obj/item/roguekey/mercenary,
 		/obj/item/flashlight/flare/torch/lantern,
 		)
+
+	change_origin(H, /datum/virtue/origin/kazengun)
 
 /datum/advclass/mercenary/rumaclan/ishu
 	name = "Ruma Clan Ishu"
@@ -101,3 +104,5 @@
 			belt = /obj/item/storage/belt/rogue/leather/knifebelt/black/kazengun
 		if("Smokebombs")
 			belt = /obj/item/storage/belt/rogue/leather/smokebelt/black
+
+	change_origin(H, /datum/virtue/origin/kazengun)

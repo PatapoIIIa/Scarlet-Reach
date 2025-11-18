@@ -48,6 +48,10 @@ GLOBAL_LIST_EMPTY(loadout_items)
 	name = "Straw Hat"
 	path = /obj/item/clothing/head/roguetown/strawhat
 
+/datum/loadout_item/strawhat
+	name = "Gasa"
+	path = /obj/item/clothing/head/roguetown/gasa
+
 /datum/loadout_item/witchhat
 	name = "Witch Hat"
 	path = /obj/item/clothing/head/roguetown/witchhat
@@ -100,6 +104,10 @@ GLOBAL_LIST_EMPTY(loadout_items)
 	name = "Heavy Hood"
 	path = /obj/item/clothing/head/roguetown/roguehood/shalal/heavyhood
 
+/datum/loadout_item/scarf
+	name = "Scarf"
+	path = /obj/item/clothing/head/roguetown/scarf
+
 /datum/loadout_item/nunveil
 	name = "Nun Veil"
 	path = /obj/item/clothing/head/roguetown/nun
@@ -111,6 +119,10 @@ GLOBAL_LIST_EMPTY(loadout_items)
 /datum/loadout_item/volfhelm
 	name = "Volf Helm"
 	path = /obj/item/clothing/head/roguetown/helmet/leather/volfhelm
+
+/datum/loadout_item/papakha
+	name = "Papakha"
+	path = /obj/item/clothing/head/roguetown/papakha
 
 //CLOAKS
 /datum/loadout_item/tabard
@@ -209,6 +221,10 @@ GLOBAL_LIST_EMPTY(loadout_items)
 	name = "Rapscallion's Shawl"
 	path = /obj/item/clothing/cloak/thief_cloak
 
+/datum/loadout_item/poncho
+	name = "Poncho"
+	path = /obj/item/clothing/cloak/poncho
+
 /datum/loadout_item/wicker_cloak
 	name = "Wicker Cloak"
 	path = /obj/item/clothing/cloak/wickercloak
@@ -274,6 +290,10 @@ GLOBAL_LIST_EMPTY(loadout_items)
 	name = "Raised Sandals"
 	path = /obj/item/clothing/shoes/roguetown/armor/rumaclan
 
+/datum/loadout_item/geta
+	name = "Geta"
+	path = /obj/item/clothing/shoes/roguetown/armor/geta
+
 //SHIRTS
 /datum/loadout_item/longcoat
 	name = "Longcoat"
@@ -306,6 +326,10 @@ GLOBAL_LIST_EMPTY(loadout_items)
 /datum/loadout_item/sailorjacket
 	name = "Leather Jacket"
 	path = /obj/item/clothing/suit/roguetown/armor/leather/vest/sailor
+
+/datum/loadout_item/velvetcoat
+	name = "Velvet Coat"
+	path = /obj/item/clothing/suit/roguetown/armor/velvetcoat
 
 /datum/loadout_item/priestrobe
 	name = "Undervestments"
@@ -387,6 +411,14 @@ GLOBAL_LIST_EMPTY(loadout_items)
 	name = "Nun Habit"
 	path = /obj/item/clothing/suit/roguetown/shirt/robe/nun
 
+/datum/loadout_item/handcarved_kitsune_mask
+	name = "Handcarved Kitsune Mask"
+	path = /obj/item/clothing/mask/rogue/facemask/cheap_kitsune
+
+/datum/loadout_item/handcarved_oni_mask
+	name = "Handcarved Oni Mask"
+	path = /obj/item/clothing/mask/rogue/facemask/cheap_oni
+
 /datum/loadout_item/worn_dobo_robe
 	name = "Worn Dobo Robe"
 	path = /obj/item/clothing/suit/roguetown/armor/basiceast/mentorsuit/light
@@ -403,6 +435,14 @@ GLOBAL_LIST_EMPTY(loadout_items)
 	name = "Ronin Dobo Robe"
 	path = /obj/item/clothing/suit/roguetown/armor/basiceast/light
 
+/datum/loadout_item/kimono
+	name = "Kimono"
+	path = /obj/item/clothing/suit/roguetown/shirt/undershirt/kimono
+
+/datum/loadout_item/haori
+	name = "Haori"
+	path = /obj/item/clothing/suit/roguetown/armor/haori
+
 /datum/loadout_item/eastshirt1
 	name = "Black Foreign Shirt"
 	path = /obj/item/clothing/suit/roguetown/shirt/undershirt/eastshirt1
@@ -410,6 +450,7 @@ GLOBAL_LIST_EMPTY(loadout_items)
 /datum/loadout_item/eastshirt2
 	name = "White Foreign Shirt"
 	path = /obj/item/clothing/suit/roguetown/shirt/undershirt/eastshirt2
+
 //PANTS
 /datum/loadout_item/tights
 	name = "Cloth Tights"
@@ -430,6 +471,10 @@ GLOBAL_LIST_EMPTY(loadout_items)
 /datum/loadout_item/leathertrou
 	name = "Leather Trousers"
 	path = /obj/item/clothing/under/roguetown/trou/leather
+
+/datum/loadout_item/leathershorts
+	name = "Leather Shorts"
+	path = /obj/item/clothing/under/roguetown/heavy_leather_pants/shorts
 
 /datum/loadout_item/sailorpants
 	name = "Seafaring Pants"
@@ -452,6 +497,10 @@ GLOBAL_LIST_EMPTY(loadout_items)
 	name = "Spectacles"
 	path = /obj/item/clothing/mask/rogue/spectacles
 
+/datum/loadout_item/spectacles_clear
+	name = "Clear Spectacles"
+	path = /obj/item/clothing/mask/rogue/spectacles/clear
+
 /datum/loadout_item/fingerless
 	name = "Fingerless Gloves"
 	path = /obj/item/clothing/gloves/roguetown/fingerless
@@ -459,6 +508,14 @@ GLOBAL_LIST_EMPTY(loadout_items)
 /datum/loadout_item/exoticsilkbelt
 	name = "Exotic Silk Belt"
 	path = /obj/item/storage/belt/rogue/leather/exoticsilkbelt
+
+/datum/loadout_item/daisho
+	name = "Daisho"
+	path = /obj/item/storage/belt/rogue/leather/daisho
+
+/datum/loadout_item/clothsash
+	name = "Cloth Sash"
+	path = /obj/item/storage/belt/rogue/leather/sash
 
 /datum/loadout_item/ragmask
 	name = "Rag Mask"
@@ -694,3 +751,7 @@ GLOBAL_LIST_EMPTY(loadout_items)
 /datum/loadout_item/cooking_recipes
 	name = "Guide to Cooking"
 	path = /obj/item/recipe_book/cooking
+
+/datum/loadout_item/matthios_amulet
+	name = "Amulet of matthios"
+	path = /obj/item/clothing/neck/roguetown/zcross/matthios

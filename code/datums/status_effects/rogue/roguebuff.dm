@@ -353,6 +353,21 @@
 	desc = "This is my sanctuary. I can overpower any opposition that dares breach it."
 	icon_state = "buff"
 
+/atom/movable/screen/alert/status_effect/buff/underdarkbuff
+	name = "Underdark Ancestry"
+	desc = "This is where my people come from. I can find my way easily in these depths."
+	icon_state = "buff"
+
+/atom/movable/screen/alert/status_effect/buff/churchbuff
+	name = "Church Defender"
+	desc = "This holy ground grants me the power to quash any dissent here."
+	icon_state = "tenbless"
+
+/datum/status_effect/buff/churchbuff
+	id = "churchbuff"
+	alert_type = /atom/movable/screen/alert/status_effect/buff/churchbuff
+	effectedstats = list("constitution" = 2,"endurance" = 2, "speed" = 1, "strength" = 1) //Their church. They are isolated a bit and not supposed to be easy frags
+
 /datum/status_effect/buff/wardenbuff
 	id = "wardenbuff"
 	alert_type = /atom/movable/screen/alert/status_effect/buff/wardenbuff
@@ -379,6 +394,19 @@
 	id = "dungeoneerbuff"
 	alert_type = /atom/movable/screen/alert/status_effect/buff/dungeoneerbuff
 	effectedstats = list("constitution" = 1,"endurance" = 1, "strength" = 2)//This only works in 2 small areas on the entire map
+
+/datum/status_effect/buff/underdark
+	id = "underdarkbuff"
+	alert_type = /atom/movable/screen/alert/status_effect/buff/underdarkbuff
+	effectedstats = list("perception" = 1)
+
+/datum/status_effect/buff/churchbuff/process()
+
+	.=..()
+	var/area/rogue/our_area = get_area(owner)
+	if(!(our_area.church_area))
+		owner.remove_status_effect(/datum/status_effect/buff/churchbuff)
+
 
 /datum/status_effect/buff/guardbuffone/process()
 
@@ -416,6 +444,21 @@
 /datum/status_effect/buff/dungeoneerbuff/on_remove()
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_CIVILIZEDBARBARIAN, id)
+
+/datum/status_effect/buff/underdark/process()
+
+	.=..()
+	var/area/rogue/our_area = get_area(owner)
+	if(!(our_area.underdark_area))
+		owner.remove_status_effect(/datum/status_effect/buff/underdark)
+
+/datum/status_effect/buff/underdark/on_apply()
+	. = ..()
+	ADD_TRAIT(owner, TRAIT_UNDERSIGHT, id)
+
+/datum/status_effect/buff/underdark/on_remove()
+	. = ..()
+	REMOVE_TRAIT(owner, TRAIT_UNDERSIGHT, id)
 
 /atom/movable/screen/alert/status_effect/buff/healing//lesser miracle
 	name = "Healing Miracle"
@@ -478,6 +521,17 @@
 	owner.remove_filter(MIRACLE_HEALING_FILTER)
 	owner.update_damage_hud()
 
+/atom/movable/screen/alert/status_effect/buff/healing/campfire
+	name = "Warming Respite"
+	desc = "The warmth of a fire soothes my ails."
+	icon_state = "buff"
+
+/datum/status_effect/buff/healing/campfire
+	id = "healing_campfire"
+	alert_type = /atom/movable/screen/alert/status_effect/buff/healing/campfire
+	examine_text = null
+	duration = 10 SECONDS
+
 #define BLOODHEAL_DUR_SCALE_PER_LEVEL 3 SECONDS
 #define BLOODHEAL_RESTORE_DEFAULT 5
 #define BLOODHEAL_RESTORE_SCALE_PER_LEVEL 2
@@ -538,12 +592,31 @@
 	duration = -1
 	healing_on_tick = 3
 	outline_colour = "#bbbbbb"
+	var/oh_god_it_hurts = FALSE
 
 /datum/status_effect/buff/healing/necras_vow/on_apply()
 	healing_on_tick = max(owner.get_skill_level(/datum/skill/magic/holy), 3)
 	return TRUE
 
 /datum/status_effect/buff/healing/necras_vow/tick()
+	if (owner.stat > 0 && (!owner.blood_volume || owner.health < owner.crit_threshold))
+		// OH SHIT. SHE'S CASHING IN ON THE VOW!!! YOU'RE FUCKED!!!
+		if (!oh_god_it_hurts)
+			to_chat(owner, span_boldwarning("The everblack settles around you. Oblivion. Then, you hear it. You hear <i>HER</i>."))
+			to_chat(owner, span_crit("<B>\"MINE.\"</B>"))
+			owner.visible_message(span_warning("[owner]'s unconscious form suddenly arches back into a silent, rictus scream, blue motes spilling from their mouth!"))
+			oh_god_it_hurts = TRUE
+		
+		owner.adjustOxyLoss(healing_on_tick) // this is the part where she kills you.
+		var/obj/effect/temp_visual/heal/H = new /obj/effect/temp_visual/heal_rogue(get_turf(owner))
+		H.color = "#33cabc"
+		return
+	else if (oh_god_it_hurts)
+		oh_god_it_hurts = FALSE
+		to_chat(owner, span_warning("The vice-like grip around your mortal coil eases, reluctantly. Yet, you feel hollow, all the same..."))
+		qdel(src) // clear the vow if someone somehow saves us
+		return
+
 	var/obj/effect/temp_visual/heal/H = new /obj/effect/temp_visual/heal_rogue(get_turf(owner))
 	H.color = "#a5a5a5"
 	var/list/wCount = owner.get_wounds()
@@ -554,7 +627,7 @@
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		owner.blood_volume = min(owner.blood_volume + (healing_on_tick + 10), BLOOD_VOLUME_NORMAL)
 	if(wCount.len > 0)
-		owner.heal_wounds(healing_on_tick, list(/datum/wound/slash, /datum/wound/puncture, /datum/wound/bite, /datum/wound/bruise))
+		owner.heal_wounds(healing_on_tick, list(/datum/wound/slash, /datum/wound/puncture, /datum/wound/bite, /datum/wound/bruise, /datum/wound/dynamic))
 		owner.update_damage_overlays()
 	owner.adjustBruteLoss(-healing_on_tick, 0)
 	owner.adjustFireLoss(-healing_on_tick, 0)
@@ -1047,6 +1120,29 @@
 	to_chat(owner, span_warning("My mind is my own again, no longer awash with foggy peace!"))
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, id)
 
+//A lesser variant of Eoran blessing meant for peacecake consumption.
+/atom/movable/screen/alert/status_effect/buff/peacecake
+	name = "Lesser blessing of Eora"
+	desc = "I feel my heart lighten. All my worries ease away."
+	icon_state = "buff"
+
+/datum/status_effect/buff/peacecake
+	id = "peacecake"
+	alert_type = /atom/movable/screen/alert/status_effect/buff/peacecake
+	duration = 5 MINUTES
+
+/datum/status_effect/buff/peacecake/on_apply()
+	. = ..()
+	to_chat(owner, span_green("Everything feels better."))
+	owner.add_stress(/datum/stressevent/pacified)
+	ADD_TRAIT(owner, TRAIT_PACIFISM, id)
+	playsound(owner, 'sound/misc/peacefulwake.ogg', 100, FALSE, -1)
+
+/datum/status_effect/buff/peacecake/on_remove()
+	. = ..()
+	to_chat(owner, span_warning("My mind is clear again, no longer clouded with foggy peace!"))
+	REMOVE_TRAIT(owner, TRAIT_PACIFISM, id)
+
 /datum/status_effect/buff/call_to_arms
 	id = "call_to_arms"
 	alert_type = /atom/movable/screen/alert/status_effect/buff/call_to_arms
@@ -1288,3 +1384,14 @@
 	var/obj/effect/temp_visual/recall_smoke/M = new /obj/effect/temp_visual/recall_smoke(get_turf(owner))
 	M.color = effect_color
 	pulse += 1
+
+/datum/status_effect/buff/parish_boon
+	id = "parish_boon"
+	alert_type = /atom/movable/screen/alert/status_effect/buff/parish_boon
+	effectedstats = list("perception" = 1, "intelligence" = 1)
+	duration = 20 MINUTES
+
+/atom/movable/screen/alert/status_effect/buff/parish_boon
+	name = "Boon of the Parish"
+	desc = "You lent partial aid to the local church and bear a modest share of its blessing."
+	icon_state = "buff"

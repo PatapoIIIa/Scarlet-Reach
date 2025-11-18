@@ -205,10 +205,10 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 		var/newtime = chargetime
 		//skill block
 		newtime = newtime - (chargetime * (ranged_ability_user.get_skill_level(associated_skill) * CHARGE_REDUCTION_PER_SKILL))
-		//spellbook cdr
+		//spellbook cast time reduction
 		var/obj/item/book/spellbook/sbook = ranged_ability_user.is_holding_item_of_type(/obj/item/book/spellbook)
 		if(sbook && sbook?.open)
-			newtime = newtime - (chargetime * (sbook.get_cdr()))
+			newtime = newtime - (chargetime * (sbook.get_castred()))
 		//staff cast time reduction
 		var/obj/item/rogueweapon/woodstaff/staff = ranged_ability_user.is_holding_item_of_type(/obj/item/rogueweapon/woodstaff/)
 		if(staff)
@@ -488,6 +488,7 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 		QDEL_IN(spell, overlay_lifespan)
 
 /obj/effect/proc_holder/spell/proc/cast(list/targets, mob/user = usr)
+	record_featured_object_stat(FEATURED_STATS_SPELLS, name)
 	return TRUE
 
 /obj/effect/proc_holder/spell/proc/after_cast(list/targets, mob/user = usr)
@@ -518,9 +519,9 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 		var/mob/living/carbon/human/devotee = user
 		devotee.devotion?.update_devotion(-devotion_cost)
 		to_chat(devotee, "<font color='purple'>I [devotion_cost > 0 ? "lost" : "gained"] [abs(devotion_cost)] devotion.</font>")
-	//Add xp based on the fatigue used -- AZURE EDIT: REMOVED!! THIS SHIT WAS TINY AND SUUUUCKED
-	/* if(xp_gain)
-		adjust_experience(usr, associated_skill, round(get_fatigue_drain() * MAGIC_XP_MULTIPLIER)) */
+	//Add xp based on the fatigue used
+	if(xp_gain)
+		adjust_experience(usr, associated_skill, round(get_fatigue_drain() * MAGIC_XP_MULTIPLIER))
 
 /obj/effect/proc_holder/spell/proc/view_or_range(distance = world.view, center=usr, type="view")
 	switch(type)

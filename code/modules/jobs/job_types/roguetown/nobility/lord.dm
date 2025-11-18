@@ -11,6 +11,7 @@ GLOBAL_LIST_EMPTY(lord_titles)
 	spawn_positions = 1
 	selection_color = JCOLOR_NOBLE
 	allowed_races = RACES_NOBILITY_ELIGIBLE_UP
+	allowed_patrons = NON_PSYDON_PATRONS
 	advclass_cat_rolls = list(CTAG_LORD = 20)
 	allowed_sexes = list(MALE, FEMALE)
 
@@ -28,12 +29,13 @@ GLOBAL_LIST_EMPTY(lord_titles)
 	display_order = JDO_LORD
 	tutorial = "Elevated upon your throne through a web of intrigue and political upheaval, you are the absolute authority of these lands and at the center of every plot within it. Every man, woman and child is envious of your position and would replace you in less than a heartbeat: Show them the error of their ways."
 	whitelist_req = FALSE
-	min_pq = 10
+	min_pq = 40
 	max_pq = null
 	round_contrib_points = 4
 	give_bank_account = 1000
 	required = TRUE
 	cmode_music = 'sound/music/combat_noble.ogg'
+	social_rank = SOCIAL_RANK_ROYAL
 
 	job_subclasses = list(
 		/datum/advclass/lord/warrior,
@@ -41,16 +43,15 @@ GLOBAL_LIST_EMPTY(lord_titles)
 		/datum/advclass/lord/inbred
 	)
 
+	virtue_restrictions = list(
+		/datum/virtue/combat/hollow_life,
+	)
+
 /datum/outfit/job/roguetown/lord
 	job_bitflag = BITFLAG_ROYALTY
 
 /datum/job/roguetown/lord/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
 	. = ..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/Q = L
-		Q.advsetup = 1
-		Q.invisibility = INVISIBILITY_MAXIMUM
-		Q.become_blind("advsetup")
 	if(L)
 		var/list/chopped_name = splittext(L.real_name, " ")
 		if(length(chopped_name) > 1)
@@ -109,6 +110,8 @@ GLOBAL_LIST_EMPTY(lord_titles)
 			mask = /obj/item/clothing/mask/rogue/lordmask/l
 	ADD_TRAIT(H, TRAIT_NOBLE, TRAIT_GENERIC)
 
+	change_origin(H, /datum/virtue/origin/racial/reach, "Royal line")
+
 //	SSticker.rulermob = H
 /** 
 	Warrior Lord subclass. An evolution from the Daring Twit. This is the original Lord Class.
@@ -146,6 +149,7 @@ GLOBAL_LIST_EMPTY(lord_titles)
 
 /datum/outfit/job/roguetown/lord/warrior/pre_equip(mob/living/carbon/human/H)
 	..()
+	H.dna.species.soundpack_m = new /datum/voicepack/male/tyrant()
 	l_hand = /obj/item/rogueweapon/lordscepter // If you put something in l hand with a mother outfit
 	// It will dupe
 	if(H.age == AGE_OLD)
@@ -191,6 +195,7 @@ GLOBAL_LIST_EMPTY(lord_titles)
 
 /datum/outfit/job/roguetown/lord/merchant/pre_equip(mob/living/carbon/human/H)
 	..()
+	H.dna.species.soundpack_m = new /datum/voicepack/male/tyrant()
 	l_hand = /obj/item/rogueweapon/lordscepter
 	if(H.mind)
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/appraise/secular)
@@ -232,6 +237,7 @@ GLOBAL_LIST_EMPTY(lord_titles)
 
 /datum/outfit/job/roguetown/lord/inbred/pre_equip(mob/living/carbon/human/H)
 	..()
+	H.dna.species.soundpack_m = new /datum/voicepack/male/tyrant()
 	l_hand = /obj/item/rogueweapon/lordscepter
 
 	H.adjust_skillrank(/datum/skill/combat/crossbows, pick(0,1), TRUE)

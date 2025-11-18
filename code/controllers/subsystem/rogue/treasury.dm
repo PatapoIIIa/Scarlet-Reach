@@ -1,6 +1,7 @@
 #define RURAL_TAX 50 // Free money. A small safety pool for lowpop mostly
 #define TREASURY_TICK_AMOUNT 6 MINUTES
 #define EXPORT_ANNOUNCE_THRESHOLD 100
+#define FOREIGNER_TAX_MULTIPLIER 1.5 //Amount that the tax rate is multiplied by for foreigners
 
 /proc/send_ooc_note(msg, name, job)
 	var/list/names_to = list()
@@ -31,7 +32,7 @@ SUBSYSTEM_DEF(treasury)
 	var/treasury_value = 0
 	var/mint_multiplier = 0.8 // 1x is meant to leave a margin after standard 80% collectable. Less than Bathmatron.
 	var/minted = 0
-	var/autoexport_percentage = 0.6 // Percentage above which stockpiles will automatically export  
+	var/autoexport_percentage = 0.6 // Percentage above which stockpiles will automatically export
 	var/list/bank_accounts = list()
 	var/list/noble_incomes = list()
 	var/list/stockpile_datums = list()
@@ -45,7 +46,8 @@ SUBSYSTEM_DEF(treasury)
 	var/total_export = 0
 
 /datum/controller/subsystem/treasury/Initialize()
-	treasury_value = rand(1000, 2000)
+	treasury_value = rand(500, 1000)
+	force_set_round_statistic(STATS_STARTING_TREASURY, treasury_value)
 
 	for(var/path in subtypesof(/datum/roguestock/bounty))
 		var/datum/D = new path
@@ -76,6 +78,7 @@ SUBSYSTEM_DEF(treasury)
 			if(istype(VB))
 				VB.update_icon()
 		give_money_treasury(RURAL_TAX, "Rural Tax Collection") //Give the King's purse to the treasury
+		record_round_statistic(STATS_RURAL_TAXES_COLLECTED, RURAL_TAX)
 		total_rural_tax += RURAL_TAX
 		auto_export()
 
@@ -132,6 +135,7 @@ SUBSYSTEM_DEF(treasury)
 
 	if (amt > 0)
 		// Player received money
+		record_round_statistic(STATS_DIRECT_TREASURY_TRANSFERS, amt)
 		if(source)
 			send_ooc_note("<b>MEISTER:</b> You received [amt]m. ([source])", name = target_name)
 			log_to_steward("+[amt] from treasury to [target_name] ([source])")
@@ -140,6 +144,7 @@ SUBSYSTEM_DEF(treasury)
 			log_to_steward("+[amt] from treasury to [target_name]")
 	else
 		// Player was fined
+		record_round_statistic(STATS_FINES_INCOME, amt)
 		if(source)
 			send_ooc_note("<b>MEISTER:</b> You were fined [amt]m. ([source])", name = target_name)
 			log_to_steward("[target_name] was fined [amt] ([source])")
@@ -164,6 +169,10 @@ SUBSYSTEM_DEF(treasury)
 	if(character in bank_accounts)
 		if(HAS_TRAIT(character, TRAIT_NOBLE))
 			bank_accounts[character] += amt
+		else if(HAS_TRAIT(character, TRAIT_OUTLANDER) && !HAS_TRAIT(character, TRAIT_INQUISITION)) //Outsiders who aren't inquisition get taxed extra
+			taxed_amount = round(amt * tax_value * FOREIGNER_TAX_MULTIPLIER)
+			amt -= taxed_amount
+			bank_accounts[character] += amt
 		else
 			taxed_amount = round(amt * tax_value)
 			amt -= taxed_amount
@@ -173,7 +182,7 @@ SUBSYSTEM_DEF(treasury)
 
 	log_to_steward("+[original_amt] deposited by [character.real_name] of which taxed [taxed_amount]")
 
-	return TRUE
+	return list(original_amt, taxed_amount)
 
 
 /datum/controller/subsystem/treasury/proc/withdraw_money_account(amt, target)
@@ -209,6 +218,7 @@ SUBSYSTEM_DEF(treasury)
 /datum/controller/subsystem/treasury/proc/distribute_estate_incomes()
 	for(var/mob/living/welfare_dependant in noble_incomes)
 		var/how_much = noble_incomes[welfare_dependant]
+		record_round_statistic(STATS_NOBLE_INCOME_TOTAL, how_much)
 		give_money_treasury(how_much, silent = TRUE)
 		total_noble_income += how_much
 		if(welfare_dependant.job == "Merchant")
@@ -229,13 +239,14 @@ SUBSYSTEM_DEF(treasury)
 	SStreasury.treasury_value += amt
 	SStreasury.total_export += amt
 	SStreasury.log_to_steward("+[amt] exported [D.name]")
+	record_round_statistic(STATS_STOCKPILE_EXPORTS_VALUE, amt)
 	if(!silent && amt >= EXPORT_ANNOUNCE_THRESHOLD) //Only announce big spending.
 		scom_announce("Scarlet Reach exports [D.name] for [amt] mammon.")
 	D.lower_demand()
 	return amt
 
 /datum/controller/subsystem/treasury/proc/auto_export()
-	var/total_value_exported = 0 
+	var/total_value_exported = 0
 	for(var/datum/roguestock/D in stockpile_datums)
 		if(!D.importexport_amt)
 			continue

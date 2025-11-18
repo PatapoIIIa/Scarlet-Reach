@@ -92,9 +92,9 @@
 
 /datum/virtue/combat/militia
 	name = "Militiaman"
-	desc = "I have trained with the local garrison in case I'm ever to be levied to fight for my lord. I have a spear stashed away in the event I'm called to arms."
-	custom_text = "+1 to Maces and Polearms, Up to Journeyman, Minimum Apprentice."
-	added_stashed_items = list("Spear" = /obj/item/rogueweapon/spear)
+	desc = "I have trained with the local garrison in case I'm ever to be levied to fight for my lord. I have a spear  and sling stashed away in the event I'm called to arms."
+	custom_text = "+1 to Maces, Slings and Polearms, Up to Journeyman, Minimum Apprentice."
+	added_stashed_items = list("Spear" = /obj/item/rogueweapon/spear, "Sling" = /obj/item/gun/ballistic/revolver/grenadelauncher/sling, "Bullet Pouch" = /obj/item/quiver/sling)
 
 /datum/virtue/combat/militia/apply_to_human(mob/living/carbon/human/recipient)
 	if(recipient.get_skill_level(/datum/skill/combat/polearms) < SKILL_LEVEL_APPRENTICE)
@@ -105,6 +105,10 @@
 		recipient.adjust_skillrank_up_to(/datum/skill/combat/maces, SKILL_LEVEL_APPRENTICE, silent = TRUE)
 	else
 		recipient.adjust_skillrank_up_to(/datum/skill/combat/maces, SKILL_LEVEL_JOURNEYMAN, silent = TRUE)
+	if(recipient.get_skill_level(/datum/skill/combat/slings) < SKILL_LEVEL_APPRENTICE)
+		recipient.adjust_skillrank_up_to(/datum/skill/combat/slings, SKILL_LEVEL_APPRENTICE, silent = TRUE)
+	else
+		recipient.adjust_skillrank_up_to(/datum/skill/combat/slings, SKILL_LEVEL_JOURNEYMAN, silent = TRUE)
 
 /datum/virtue/combat/brawler
 	name = "Brawler's Apprentice"
@@ -156,7 +160,7 @@
 	desc = "I was once afflicted with the accursed rot, and was cured. It has left me changed: my limbs are weaker, but I feel no pain and have no need to breathe..."
 	custom_text = "Colors your body a distinct, sickly green."
 	// below is functionally equivalent to dying and being resurrected via astrata T4 - yep, this is what it gives you.
-	added_traits = list(TRAIT_EASYDISMEMBER, TRAIT_NOPAIN, TRAIT_NOPAINSTUN, TRAIT_NOBREATH, TRAIT_TOXIMMUNE, TRAIT_ZOMBIE_IMMUNE, TRAIT_ROTMAN)
+	added_traits = list(TRAIT_EASYDISMEMBER, TRAIT_NOPAIN, TRAIT_NOPAINSTUN, TRAIT_NOBREATH, TRAIT_TOXIMMUNE, TRAIT_ZOMBIE_IMMUNE, TRAIT_ROTMAN, TRAIT_SILVER_WEAK)
 
 /datum/virtue/combat/rotcured/apply_to_human(mob/living/carbon/human/recipient)
 	recipient.update_body() // applies the rot skin tone stuff
@@ -182,6 +186,21 @@
 
 /datum/virtue/combat/hollow_life/apply_to_human(mob/living/carbon/human/recipient)
 	recipient.change_stat(STATKEY_CON, -2)
-	recipient.mob_biotypes |= MOB_UNDEAD
 	recipient.dna.species.soundpack_m = new /datum/voicepack/hollow()
 	recipient.dna.species.soundpack_f = new /datum/voicepack/hollow_fem()
+	if(recipient.charflaw)
+		if(recipient.charflaw.type == /datum/charflaw/damned)
+			to_chat(recipient, "Your body is plagued by curses!")
+			ADD_TRAIT(recipient, TRAIT_NORUN, TRAIT_GENERIC)
+		else
+			recipient.mob_biotypes |= MOB_UNDEAD //Undead biotype is already applied by damned vice.
+
+/datum/virtue/combat/vampire
+	name = "Crimson Curse"
+	desc = "The dark gift of vampirism courses through my veins. I thirst for blood, shun the light of day, and possess unnatural resilience and strength. And yet these fools dare call me monster..."
+
+/datum/virtue/combat/vampire/apply_to_human(mob/living/carbon/human/recipient)
+	var/datum/antagonist/vampirelord/lesser/new_antag = new /datum/antagonist/vampirelord/lesser/stray()
+	recipient.mind.add_antag_datum(new_antag)
+	recipient.energy = recipient.max_energy
+	recipient.update_health_hud()

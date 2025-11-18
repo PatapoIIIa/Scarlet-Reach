@@ -221,7 +221,7 @@
 
 /atom/movable/screen/alert/status_effect/buff/necras_vow
 	name = "Vow to Necra"
-	desc = "I have pledged a promise to Necra. Undeath shall be harmed or lit aflame if they strike me. Rot will not claim me. Lost limbs can only be restored if they are myne."
+	desc = "I have pledged a promise to Necra, and She will claim me quickly as I approach death. Undeath shall be harmed or lit aflame if they strike me. Rot will not claim me. Lost limbs can only be restored if they are myne."
 	icon_state = "necravow"
 
 #define NECRAVOW_FILTER "necravow_glow"

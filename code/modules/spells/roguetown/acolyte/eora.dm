@@ -36,12 +36,12 @@
 
 /obj/effect/proc_holder/spell/invoked/bud
 	name = "Eoran Bloom"
-	desc = ""
+	desc = "Grow an Eoran bud upon the target's head, pacifying them."
 	clothes_req = FALSE
 	range = 7
 	overlay_state = "love"
 	sound = list('sound/magic/magnet.ogg')
-	req_items = list(/obj/item/clothing/neck/roguetown/psicross/eora)
+	req_items = list(/obj/item/clothing/neck/roguetown/psicross)
 	releasedrain = 40
 	chargetime = 60
 	warnie = "spellwarning"
@@ -74,6 +74,7 @@
 
 /obj/effect/proc_holder/spell/invoked/eoracurse
 	name = "Eora's Curse"
+	desc = "Call upon Eora to apply sense-altering effects to your target."
 	overlay_state = "curse2"
 	releasedrain = 50
 	chargetime = 30
@@ -81,7 +82,7 @@
 	warnie = "sydwarning"
 	movement_interrupt = FALSE
 	chargedloop = null
-	req_items = list(/obj/item/clothing/neck/roguetown/psicross/eora)
+	req_items = list(/obj/item/clothing/neck/roguetown/psicross)
 	sound = 'sound/magic/whiteflame.ogg'
 	associated_skill = /datum/skill/magic/holy
 	antimagic_allowed = TRUE
@@ -342,7 +343,7 @@
 	invocation = "Eora, nourish this offering!"
 	desc = "Bless a food item. Items that take longer to eat heal slower. Skilled clergy can bless food more often. Finer food heals more."
 	sound = 'sound/magic/magnet.ogg'
-	req_items = list(/obj/item/clothing/neck/roguetown/psicross/eora)
+	req_items = list(/obj/item/clothing/neck/roguetown/psicross)
 	devotion_cost = 25
 	recharge_time = 90 SECONDS
 	overlay_state = "bread"
@@ -378,7 +379,7 @@
 	invocation = "Eora, provide sanctuary for your beauty!"
 	desc = "Grow a cool tree."
 	sound = 'sound/magic/magnet.ogg'
-	req_items = list(/obj/item/clothing/neck/roguetown/psicross/eora)
+	req_items = list(/obj/item/clothing/neck/roguetown/psicross)
 	devotion_cost = 500
 	recharge_time = 5 SECONDS
 	chargetime = 1 SECONDS
@@ -576,10 +577,10 @@
 				else
 					to_chat(c, span_warning("A divine curse strikes you for destroying the sacred tree!"))
 					c.adjustFireLoss(100)
-					c.IgniteMob()
+					c.ignite_mob()
 					c.add_stress(/datum/stressevent/psycurse)
 			record_featured_stat(FEATURED_STATS_TREE_FELLERS, user)
-			GLOB.scarlet_round_stats[STATS_TREES_CUT]++
+			record_round_statistic(STATS_LUX_REVIVALS)
 
 /obj/structure/eoran_pomegranate_tree/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armor_penetration = 0)
 	visible_message(span_notice("The tree shudders as it is harmed. You feel dread emanating from it."))

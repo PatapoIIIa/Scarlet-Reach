@@ -165,7 +165,7 @@
 	if(isliving(target))
 		var/mob/living/M = target
 		M.adjust_fire_stacks(5)
-		M.IgniteMob()
+		M.ignite_mob()
 
 /datum/component/martyrweapon/proc/on_equip(datum/source, mob/user, slot)
 	if(!allow_all)
@@ -429,10 +429,11 @@
 	allowed_races = RACES_SECOND_CLASS_NO_GOLEM
 	disallowed_races = list(
 		/datum/species/lamia,
+		/datum/species/harpy,
 	)
 	allowed_patrons = ALL_DIVINE_PATRONS
 	outfit = /datum/outfit/job/roguetown/martyr
-	min_pq = 10 //Cus it's a Martyr of the Ten. Get it.
+	min_pq =  14
 	max_pq = null
 	round_contrib_points = 4
 	total_positions = 1
@@ -440,13 +441,15 @@
 	display_order = JDO_MARTYR
 	give_bank_account = TRUE
 	cmode_music = 'sound/music/combat_martyrsafe.ogg'
+	social_rank = SOCIAL_RANK_NOBLE
 
 	job_traits = list(
 		TRAIT_HEAVYARMOR,
 		TRAIT_STEELHEARTED,
 		TRAIT_SILVER_BLESSED,
 		TRAIT_EMPATH,
-		TRAIT_DUALWIELDER
+		TRAIT_DUALWIELDER,
+		TRAIT_CLERGY
 	)
 
 	//No undeath-adjacent virtues for a role that can sacrifice itself. The Ten like their sacrifices 'pure'. (I actually didn't want to code returning those virtue traits post-sword use)
@@ -454,26 +457,20 @@
 	//Dual wielder is there to stand-in for ambidextrous in case they activate their sword in their off-hand.
 	virtue_restrictions = list(
 		/datum/virtue/utility/noble,
+		/datum/virtue/utility/blueblooded,
 		/datum/virtue/combat/rotcured,
 		/datum/virtue/utility/deadened,
 		/datum/virtue/utility/deathless,
 		/datum/virtue/combat/dualwielder,
 		/datum/virtue/heretic/zchurch_keyholder,
 		/datum/virtue/combat/hollow_life,
+		/datum/virtue/combat/vampire,
 	)
 
 	advclass_cat_rolls = list(CTAG_MARTYR = 2)
 	job_subclasses = list(
 		/datum/advclass/martyr
 	)
-
-/datum/job/roguetown/martyr/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/martyr
 	name = "Martyr"
@@ -517,6 +514,7 @@
 	beltr = /obj/item/storage/keyring/priest
 	beltl = /obj/item/storage/belt/rogue/pouch/coins/rich
 	backr = /obj/item/storage/backpack/rogue/satchel
+	backl = /obj/item/rogueweapon/shield/tower/metal/holysee
 	gloves = /obj/item/clothing/gloves/roguetown/chain
 	wrists = /obj/item/clothing/wrists/roguetown/bracers
 	neck = /obj/item/clothing/neck/roguetown/bevor
@@ -546,7 +544,7 @@
 	righthand_file = 'icons/mob/inhands/weapons/roguemartyr_righthand.dmi'
 	name = "martyr sword"
 	desc = "A relic from the Holy See's own vaults. It simmers with godly energies, and will only yield to the hands of those who have taken the Oath."
-	max_blade_int = 200
+	max_blade_int = 300
 	max_integrity = 300
 	parrysound = "bladedmedium"
 	swingsound = BLADEWOOSH_LARGE
@@ -566,6 +564,17 @@
 	is_silver = TRUE
 	toggle_state = null
 	is_important = TRUE
+
+/obj/item/rogueweapon/sword/long/martyr/ComponentInitialize()
+	AddComponent(\
+		/datum/component/silverbless,\
+		pre_blessed = BLESSING_TENNITE,\
+		silver_type = SILVER_TENNITE,\
+		added_force = 0,\
+		added_blade_int = 0,\
+		added_int = 0,\
+		added_def = 0,\
+	)
 
 /obj/item/rogueweapon/sword/long/martyr/Initialize()
 	AddComponent(/datum/component/martyrweapon)
@@ -589,7 +598,7 @@
 				visible_message(span_warning("[H] lets out a painful shriek as the sword lashes out at them!"))
 				H.emote("agony")
 				H.adjust_fire_stacks(5)
-				H.IgniteMob()
+				H.ignite_mob()
 			return FALSE
 		else	//Everyone else
 			to_chat(user, span_warning("A painful jolt across your entire body sends you to the ground. You cannot touch this thing."))
@@ -627,6 +636,10 @@
 	sellprice = 100
 	slot_flags = ITEM_SLOT_BACK_R|ITEM_SLOT_ARMOR|ITEM_SLOT_CLOAK
 	flags_inv = HIDECROTCH|HIDEBOOB
+
+/obj/item/clothing/cloak/martyr/ComponentInitialize()
+    . = ..()
+    AddComponent(/datum/component/storage/concrete/roguetown/cloak)
 
 /obj/item/clothing/suit/roguetown/armor/plate/full/holysee
 	name = "holy silver plate"
@@ -693,6 +706,10 @@
 	flags_inv = HIDECROTCH|HIDEBOOB
 	var/overarmor = TRUE
 	sellprice = 300
+
+/obj/item/clothing/cloak/holysee/ComponentInitialize()
+    . = ..()
+    AddComponent(/datum/component/storage/concrete/roguetown/cloak)
 
 /obj/item/clothing/cloak/holysee/MiddleClick(mob/user)
 	overarmor = !overarmor

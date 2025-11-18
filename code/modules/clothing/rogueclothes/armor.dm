@@ -383,17 +383,6 @@
 	icon_state = "shadowplate"
 	item_state = "shadowplate"
 
-//................ Corset.................... //
-/obj/item/clothing/suit/roguetown/armor/corset
-	slot_flags = ITEM_SLOT_ARMOR|ITEM_SLOT_SHIRT
-	name = "corset"
-	desc = "A leather binding to constrict one's figure... and lungs."
-	icon_state = "corset"
-	armor_class = ARMOR_CLASS_LIGHT
-	body_parts_covered = CHEST
-	grid_height = 64
-	grid_width = 32
-
 /obj/item/clothing/suit/roguetown/armor/gambeson/lord
 	name = "arming jacket"
 	icon_state = "dgamb"
@@ -1014,14 +1003,6 @@
 	max_integrity = 150
 	smeltresult = /obj/item/ingot/aalloy
 
-
-/obj/item/clothing/suit/roguetown/armor/plate/paalloy
-	name = "ancient half-plate"
-	desc = "Plate formed out of ancient alloys. Aeon's grasp has been lifted from it."
-	icon_state = "ancientplate"
-	item_state = "ancientplate"
-	smeltresult = /obj/item/ingot/aaslag
-
 /obj/item/clothing/suit/roguetown/armor/plate/fluted
 	name = "fluted half-plate"
 	desc = "A sturdily made fluted half-plate armour-set, complete with pauldrons and shoulder-guards. \
@@ -1046,7 +1027,7 @@
 	if(!HAS_TRAIT(user, TRAIT_HORDE))
 		to_chat(user, "<font color='red'>UNWORTHY HANDS TOUCHING THIS ARMOR, CEASE OR BE RENDED ASUNDER!</font>")
 		user.adjust_fire_stacks(5)
-		user.IgniteMob()
+		user.ignite_mob()
 		user.Stun(40)
 	..()
 
@@ -1138,6 +1119,12 @@
 		return
 	qdel(src)
 
+/obj/item/clothing/suit/roguetown/armor/plate/full/paalloy
+	name = "ancient full-plate" //why was this half plate?
+	desc = "Plate formed out of ancient alloys. Aeon's grasp has been lifted from it."
+	icon_state = "ancientplate"
+	item_state = "ancientplate"
+	smeltresult = /obj/item/ingot/aaslag
 
 /obj/item/clothing/suit/roguetown/armor/plate/full/bikini
 	slot_flags = ITEM_SLOT_ARMOR
@@ -1388,6 +1375,7 @@
 	icon_state = "inqcoat"
 	item_state = "inqcoat"
 	sleevetype = "shirt"
+	sewrepair = TRUE
 	max_integrity = 300
 	anvilrepair = /datum/skill/craft/armorsmithing
 	equip_delay_self = 4 SECONDS
@@ -1451,7 +1439,7 @@
 	armor = ARMOR_PLATE_BSTEEL
 	allowed_race = CLOTHED_RACES_TYPES
 	blocking_behavior = null
-	max_integrity = 400
+	max_integrity = 650
 	smeltresult = /obj/item/ingot/blacksteel
 	equip_delay_self = 12 SECONDS
 	unequip_delay_self = 12 SECONDS
@@ -1471,7 +1459,7 @@
 	armor = ARMOR_PLATE_BSTEEL
 	allowed_race = CLOTHED_RACES_TYPES
 	blocking_behavior = null
-	max_integrity = 400
+	max_integrity = 650
 	smeltresult = /obj/item/ingot/blacksteel
 	equip_delay_self = 12 SECONDS
 	unequip_delay_self = 12 SECONDS
@@ -1687,3 +1675,53 @@
 	flags_inv = HIDEBOOB
 	max_integrity = 200
 	equip_delay_self = 30
+
+/obj/item/clothing/suit/roguetown/armor/velvetcoat
+	name = "velvet coat"
+	desc = "A velvet coat made from the finest fabrics."
+	icon_state = "velvetcoat"
+	detail_tag = "_detail"
+	altdetail_tag = "_detailalt"
+	detail_color = CLOTHING_WHITE
+	allowed_race = NON_DWARVEN_RACE_TYPES
+	slot_flags = ITEM_SLOT_ARMOR|ITEM_SLOT_CLOAK
+	break_sound = 'sound/foley/cloth_rip.ogg'
+	drop_sound = 'sound/foley/dropsound/cloth_drop.ogg'
+	sewrepair = TRUE
+	grid_width = 64
+	grid_height = 64
+
+/obj/item/clothing/suit/roguetown/armor/velvetcoat/Initialize()
+	. = ..()		
+	update_icon()
+
+/obj/item/clothing/suit/roguetown/armor/velvetcoat/update_icon()
+	cut_overlays()
+	if(get_detail_tag())
+		var/mutable_appearance/pic = mutable_appearance(icon(icon, "[icon_state][detail_tag]"))
+		pic.appearance_flags = RESET_COLOR
+		if(get_detail_color())
+			pic.color = get_detail_color()
+		add_overlay(pic)
+
+/obj/item/clothing/suit/roguetown/armor/velvetcoat/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/storage/concrete/roguetown/cloak)
+
+//Kazengun
+
+/obj/item/clothing/suit/roguetown/armor/haori
+	name = "haori"
+	desc = "A traditional jacket meant to be worn over a kimono."
+	icon_state = "haori"
+	color = CLOTHING_BLACK
+	slot_flags = ITEM_SLOT_ARMOR|ITEM_SLOT_CLOAK
+	break_sound = 'sound/foley/cloth_rip.ogg'
+	drop_sound = 'sound/foley/dropsound/cloth_drop.ogg'
+	sewrepair = TRUE
+	r_sleeve_status = SLEEVE_NORMAL
+	l_sleeve_status = SLEEVE_NORMAL
+
+/obj/item/clothing/suit/roguetown/armor/haori/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/storage/concrete/roguetown/cloak)

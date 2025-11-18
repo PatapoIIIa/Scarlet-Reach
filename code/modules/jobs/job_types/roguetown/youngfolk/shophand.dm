@@ -6,7 +6,6 @@
 	total_positions = 1
 	spawn_positions = 1
 	allowed_sexes = list(MALE, FEMALE)
-	allowed_ages = list(AGE_ADULT)
 	allowed_races = RACES_ALL_KINDS
 	tutorial = "You work the largest store in the Reach by grace of the Merchant who has shackled you to this drudgery. The work of stocking shelves and taking inventory for your employer is mind-numbing and repetitive--but at least you have a roof over your head and comfortable surroundings. With time, perhaps you will one day be more than a glorified servant."
 	outfit = /datum/outfit/job/roguetown/shophand
@@ -15,6 +14,7 @@
 	min_pq = -10
 	max_pq = null
 	round_contrib_points = 2
+	social_rank = SOCIAL_RANK_PEASANT
 
 	job_traits = list(TRAIT_SEEPRICES_SHITTY)
 
@@ -22,14 +22,6 @@
 	job_subclasses = list(
 		/datum/advclass/shophand
 	)
-
-/datum/job/roguetown/shophand/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/shophand
 	name = "Shophand"

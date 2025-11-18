@@ -16,6 +16,7 @@
 	min_pq = -10
 	max_pq = null
 	round_contrib_points = 2
+	social_rank = SOCIAL_RANK_PEASANT
 
 	job_traits = list(TRAIT_CICERONE)
 
@@ -23,14 +24,6 @@
 	job_subclasses = list(
 		/datum/advclass/tapster
 	)
-
-/datum/job/roguetown/knavewench/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/tapster
 	name = "Tapster"

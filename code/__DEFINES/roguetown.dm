@@ -188,6 +188,7 @@
 	/datum/species/goblinp,\
 	/datum/species/dullahan,\
 	/datum/species/lamia,\
+	/datum/species/harpy,\
 )
 
 #define RACES_NOBILITY_ELIGIBLE \
@@ -210,6 +211,7 @@
 
 #define RACES_WILDKIN \
 	/datum/species/anthromorph,\
+	/datum/species/harpy,\
 
 #define RACES_SECOND_CLASS \
     /datum/species/vulpkanin,\
@@ -222,6 +224,7 @@
     /datum/species/dracon,\
     /datum/species/akula,\
 	/datum/species/lamia,\
+	/datum/species/harpy,\
 
 #define RACES_FEARED \
 	/datum/species/halforc,\
@@ -278,6 +281,7 @@
 	/datum/species/golem/porcelain,\
 	/datum/species/dullahan,\
 	/datum/species/lamia,\
+	/datum/species/harpy,\
 )
 
 #define CLOTHED_RACES_TYPES list(\
@@ -305,7 +309,17 @@
 	/datum/species/golem/porcelain,\
 	/datum/species/dullahan,\
 	/datum/species/lamia,\
+	/datum/species/harpy,\
 )
+
+// they usually share the same clothing sprites, so like.... BRAH...
+#define SHORT_RACE_TYPES list(\
+	/datum/species/dwarf/mountain,\
+	/datum/species/anthromorphsmall,\
+	/datum/species/kobold,\
+	/datum/species/goblinp,\
+)
+
 // Non-dwarf non-kobold non-goblin mostly
 #define NON_DWARVEN_RACE_TYPES list(\
 	/datum/species/human/northern,\
@@ -328,7 +342,31 @@
 	/datum/species/golem/porcelain,\
 	/datum/species/dullahan,\
 	/datum/species/lamia,\
+	/datum/species/harpy,\
 )
+
+#define NON_DWARVEN_NON_GOLEM_RACE_TYPES list(\
+	/datum/species/human/northern,\
+	/datum/species/human/halfelf,\
+	/datum/species/elf/dark,\
+	/datum/species/elf/wood,\
+	/datum/species/tieberian,\
+	/datum/species/aasimar,\
+	/datum/species/lizardfolk,\
+	/datum/species/lupian,\
+	/datum/species/tabaxi,\
+	/datum/species/vulpkanin,\
+	/datum/species/akula,\
+	/datum/species/moth,\
+	/datum/species/dracon,\
+	/datum/species/anthromorph,\
+	/datum/species/demihuman,\
+	/datum/species/halforc,\
+	/datum/species/dullahan,\
+	/datum/species/lamia,\
+	/datum/species/harpy,\
+)
+
 // Non-elf non-dwarf non-kobold non-goblin mostly
 #define HUMANLIKE_RACE_TYPES list(\
 	/datum/species/human/northern,\
@@ -347,6 +385,7 @@
 	/datum/species/golem/porcelain,\
 	/datum/species/dullahan,\
 	/datum/species/lamia,\
+	/datum/species/harpy,\
 )
 #define ALL_CLERIC_PATRONS list(/datum/patron/divine/astrata, /datum/patron/divine/noc, /datum/patron/divine/dendor, /datum/patron/divine/necra, /datum/patron/divine/pestra, /datum/patron/divine/ravox, /datum/patron/divine/malum, /datum/patron/divine/eora) // Currently unused.
 
@@ -451,6 +490,7 @@ GLOBAL_LIST_EMPTY(round_join_times)
 #define CTAG_HEIR			"CAT_HEIR"			// Prince(cess) class - Handles Heir class selector
 #define CTAG_LORD			"CAT_LORD"			// Lord class - Handles Lord class selector
 #define CTAG_SQUIRE			"CAT_SQUIRE"		// Squire class - Handles Squire class selector
+#define CTAG_GATEMASTER		"CAT_GATEMASTER"	// Gatemaster class - Handles Gatemaster class selector
 #define CTAG_VETERAN		"CAT_VETERAN"		// Veteran class - Handles Veteran class selector
 #define CTAG_MARSHAL		"CAT_MARSHAL"		// Marshal class
 #define CTAG_SENESCHAL		"CAT_SENESCHAL"		// Seneschal's aesthetic choices.
@@ -516,6 +556,14 @@ GLOBAL_LIST_EMPTY(round_join_times)
 #define CLASS_CAT_OTAVA "Otava"
 #define CLASS_CAT_KAZENGUN "Kazengun"
 #define CLASS_CAT_RACIAL "Race Exclusive" //Used for black oaks, grudgebearer dwarves, etc.
+
+// Social rank defines
+#define SOCIAL_RANK_DIRT 1
+#define SOCIAL_RANK_PEASANT 2
+#define SOCIAL_RANK_YEOMAN 3
+#define SOCIAL_RANK_MINOR_NOBLE 4
+#define SOCIAL_RANK_NOBLE 5
+#define SOCIAL_RANK_ROYAL 6
 
 /*
 	Defines for the triumph buy datum categories

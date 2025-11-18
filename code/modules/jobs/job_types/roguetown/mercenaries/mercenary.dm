@@ -10,7 +10,7 @@
 	tutorial = "Blood stains your hands and the coins you hold. You are a sell-sword, a mercenary, a contractor of war. Where you come from, what you are, who you serve.. none of it matters. What matters is that the mammon flows to your pocket."
 	display_order = JDO_MERCENARY
 	selection_color = JCOLOR_MERCENARY
-	min_pq = 2		//Will be handled by classes if PQ limiting is needed. --But Until then, learn escalation, mercs.
+	min_pq = 10	//Will be handled by classes if PQ limiting is needed. --But Until then, learn escalation, mercs.
 	max_pq = null
 	round_contrib_points = 1
 	outfit = null	//Handled by classes
@@ -19,6 +19,7 @@
 	job_traits = list(TRAIT_OUTLANDER, TRAIT_STEELHEARTED)
 	always_show_on_latechoices = TRUE
 	class_categories = TRUE
+	social_rank = SOCIAL_RANK_PEASANT
 
 	job_subclasses = list(
 		/datum/advclass/mercenary/atgervi,
@@ -46,13 +47,7 @@
 		/datum/advclass/mercenary/blackoak/ranger,
 		/datum/advclass/mercenary/underdweller,
 		/datum/advclass/mercenary/grudgebearer,
-		/datum/advclass/mercenary/grudgebearer/soldier
+		/datum/advclass/mercenary/grudgebearer/soldier,
+		/datum/advclass/mercenary/grudgekeeper,
+		/datum/advclass/mercenary/trollslayer
 	)
-
-/datum/job/roguetown/mercenary/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(L)
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")

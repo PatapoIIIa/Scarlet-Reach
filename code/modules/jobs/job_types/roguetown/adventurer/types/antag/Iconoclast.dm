@@ -7,6 +7,7 @@
 	category_tags = list(CTAG_BANDIT)
 	maximum_possible_slots = 1 // We only want one of these.
 	cmode_music = 'sound/music/Iconoclast.ogg'
+	subclass_social_rank = SOCIAL_RANK_PEASANT
 
 	traits_applied = list(
 		TRAIT_HEAVYARMOR,// We are going to be the lord's first heavy armor unarmed class
@@ -47,6 +48,7 @@
 	pants = /obj/item/clothing/under/roguetown/trou/leather
 	r_hand = /obj/item/rogueweapon/woodstaff
 	shirt = /obj/item/clothing/suit/roguetown/shirt/shortshirt/random
+	neck = /obj/item/clothing/neck/roguetown/zcross/matthios
 	shoes = /obj/item/clothing/shoes/roguetown/shortboots
 	cloak = /obj/item/clothing/cloak/raincloak/furcloak/brown
 	backr = /obj/item/storage/backpack/rogue/satchel

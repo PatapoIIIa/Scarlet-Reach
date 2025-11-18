@@ -294,7 +294,7 @@
 /datum/stressevent/tortured/on_apply(mob/living/user)
 	. = ..()
 	if(user.client)
-		GLOB.scarlet_round_stats[STATS_TORTURES]++
+		record_round_statistic(STATS_TORTURES)
 
 /datum/stressevent/noble_bad_manners
 	stressadd = 1
@@ -366,6 +366,11 @@
 	desc = span_red("My PATRON is NOT PROUD of ME!")
 	timer = 20 MINUTES
 
+/datum/stressevent/blessed_weapon
+	stressadd = -3
+	timer = 999 MINUTES
+	desc = span_green("I'm wielding a BLESSED weapon!")
+
 /datum/stressevent/lostchampion
 	stressadd = 8
 	desc = span_red("I feel I have lost my champion! Oh, my stricken heart!")
@@ -380,3 +385,13 @@
 	stressadd = 10
 	desc = span_boldred("Perhaps I shouldn't have done that...")
 	timer = 12 MINUTES
+
+/datum/stressevent/sensitivity
+	stressadd = 5
+	desc = span_boldred("The sun is too bright! I hate the surface!")
+	timer = 5 MINUTES
+
+/datum/stressevent/wingcut
+	stressadd = 6
+	desc = span_boldred("AAAGGHHH!! MY PRECIOUS WINGS!!")
+	timer = 40 MINUTES

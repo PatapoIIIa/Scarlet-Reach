@@ -169,6 +169,9 @@
 	var/migrant_type = null
 	var/advjob = null
 
+	/// What social rank does this mob have
+	var/social_rank
+
 	/// A list of factions that this mob is currently in, for hostile mob targetting, amongst other things
 	var/list/faction = list("neutral")
 
@@ -273,6 +276,7 @@
 
 	var/last_dodge = 0
 	var/last_parry = 0
+	var/last_used_double_attack = 0 //Used for Dual Wielder virtue, holds the timer since the double attack was last used
 	var/next_emote = 0
 	var/next_me_emote = 0
 	var/lastpoint = 0
@@ -308,3 +312,10 @@
 
 	// The last tick where we manually moved, or clicked on something in-world. Useful for preventing abuse of mobs with AFK players.
 	var/last_client_interact = 0
+
+	var/flying = FALSE
+
+	var/datum/weakref/offered_item_ref
+
+	/// cooldown for the next time this person can offer
+	COOLDOWN_DECLARE(offer_cooldown)

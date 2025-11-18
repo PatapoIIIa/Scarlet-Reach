@@ -12,23 +12,16 @@
 	cmode_music = 'sound/music/combat_physician.ogg'
 	display_order = JDO_APOTHECARY
 	give_bank_account = 30
-	min_pq = 0
+	min_pq = 5
 	max_pq = null
 	round_contrib_points = 2
+	social_rank = SOCIAL_RANK_YEOMAN
 
 	advclass_cat_rolls = list(CTAG_APOTH = 2)
 	job_traits = list(TRAIT_NOSTINK, TRAIT_EMPATH)
 	job_subclasses = list(
 		/datum/advclass/apothecary
 	)
-
-/datum/job/roguetown/apothecary/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
-	..()
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		H.advsetup = 1
-		H.invisibility = INVISIBILITY_MAXIMUM
-		H.become_blind("advsetup")
 
 /datum/advclass/apothecary
 	name = "Apothecary"

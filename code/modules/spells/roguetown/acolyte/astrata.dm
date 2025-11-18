@@ -1,5 +1,6 @@
 /obj/effect/proc_holder/spell/invoked/projectile/lightningbolt/sacred_flame_rogue
 	name = "Sacred Flame"
+	desc = "Launch a laser of holy fire at your target, setting them aflame. Deals increased damage to undead."
 	overlay_state = "sacredflame"
 	sound = 'sound/magic/bless.ogg'
 	req_items = list(/obj/item/clothing/neck/roguetown/psicross)
@@ -42,11 +43,11 @@
 			damage *= fuck_that_guy_multiplier
 			M.adjust_fire_stacks(10) //4 pats to put it out
 			visible_message(span_warning("[target] erupts in flame upon being struck by [src]!"))
-			M.IgniteMob()
+			M.ignite_mob()
 		else
 			M.adjust_fire_stacks(4) //2 pats to put it out
 			visible_message(span_warning("[src] ignites [target]!"))
-			M.IgniteMob()
+			M.ignite_mob()
 	return FALSE
 
 /obj/effect/proc_holder/spell/invoked/ignition
@@ -85,6 +86,7 @@
 
 /obj/effect/proc_holder/spell/invoked/revive
 	name = "Anastasis"
+	desc = "Call upon Her greatness to return lyfe to a dead target. Obliterates the undead."
 	overlay_state = "revive"
 	releasedrain = 90
 	chargedrain = 0
@@ -173,7 +175,7 @@
 		testing("revived2")
 		target.emote("breathgasp")
 		target.Jitter(100)
-		GLOB.scarlet_round_stats[STATS_ASTRATA_REVIVALS]++
+		record_round_statistic(STATS_ASTRATA_REVIVALS)
 		target.update_body()
 		target.visible_message(span_notice("[target] is revived by holy light!"), span_green("I awake from the void."))
 		if(revive_pq && !HAS_TRAIT(target, TRAIT_IWASREVIVED) && user?.ckey)
@@ -200,6 +202,7 @@
 //T0. Removes cone vision for a dynamic duration.
 /obj/effect/proc_holder/spell/self/astrata_gaze
 	name = "Astratan Gaze"
+	desc = "Call upon your patron to improve your sight to 360-degrees."
 	overlay_state = "astrata_gaze"
 	releasedrain = 10
 	chargedrain = 0
@@ -219,7 +222,8 @@
 		revert_cast()
 		return FALSE
 	var/mob/living/carbon/human/H = user
-	H.apply_status_effect(/datum/status_effect/buff/astrata_gaze, user.get_skill_level(associated_skill))
+	var/skill_level = H.get_skill_level(associated_skill)
+	H.apply_status_effect(/datum/status_effect/buff/astrata_gaze, skill_level)
 	return TRUE
 
 /atom/movable/screen/alert/status_effect/buff/astrata_gaze
@@ -231,25 +235,42 @@
 	id = "astratagaze"
 	alert_type = /atom/movable/screen/alert/status_effect/buff/astrata_gaze
 	duration = 20 SECONDS
+	var/skill_level = 0
+	status_type = STATUS_EFFECT_REPLACE
 
-/datum/status_effect/buff/astrata_gaze/on_apply(assocskill)
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.viewcone_override = TRUE
-		H.hide_cone()
-		H.update_cone_show()
-	var/per_bonus = 0
-	if(assocskill)
-		if(assocskill > SKILL_LEVEL_NOVICE)
-			per_bonus++
-		duration *= assocskill
-	if(GLOB.tod == "day" || GLOB.tod == "dawn")
-		per_bonus++
-		duration *= 2
-	if(per_bonus > 0)
-		effectedstats = list("perception" = per_bonus)
-	to_chat(owner, span_info("She shines through me! I can perceive all clear as dae!"))
-	. = ..()
+/datum/status_effect/buff/astrata_gaze/on_creation(mob/living/new_owner, slevel)
+    // Only store skill level here
+    skill_level = slevel
+    .=..()
+
+/datum/status_effect/buff/astrata_gaze/on_apply()
+	// Reset base values because the miracle can 
+	// now actually be recast at high enough skill and during day time
+	// This is a safeguard because buff code makes my head hurt
+    var/per_bonus = 0
+    duration = 20 SECONDS
+
+    if(skill_level > SKILL_LEVEL_NOVICE)
+        per_bonus++
+
+    if(GLOB.tod == "day" || GLOB.tod == "dawn")
+        per_bonus++
+        duration *= 2
+
+    duration *= skill_level
+
+    if(per_bonus)
+        effectedstats = list(STATKEY_PER = per_bonus)
+
+    if(ishuman(owner))
+        var/mob/living/carbon/human/H = owner
+        H.viewcone_override = TRUE
+        H.hide_cone()
+        H.update_cone_show()
+
+    to_chat(owner, span_info("She shines through me! I can perceive all clear as dae!"))
+
+    return ..()
 
 /datum/status_effect/buff/astrata_gaze/on_remove()
 	. = ..()

@@ -13,14 +13,19 @@
 	if(ishuman(target))
 		var/mob/living/carbon/human/user_human = user
 		var/mob/living/carbon/human/target_human = target
+
 		var/thiefskill = user.get_skill_level(/datum/skill/misc/stealing) + (has_world_trait(/datum/world_trait/matthios_fingers) ? 1 : 0)
 		var/stealroll = roll("[thiefskill]d6")
 		var/targetperception = (target_human.STAPER)
+
 		var/list/stealablezones = list("chest", "neck", "groin", "r_hand", "l_hand")
 		var/list/stealpos = list()
 		var/list/mobsbehind = list()
+
 		var/exp_to_gain = user_human.STAINT
-		to_chat(user, span_notice("I try to steal from [target_human]..."))	
+
+		to_chat(user, span_notice("I try to steal from [target_human]..."))
+
 		if(do_after(user, 5, target = target_human, progress = 0))
 			if(stealroll > targetperception)
 				//TODO add exp here
@@ -29,13 +34,17 @@
 					to_chat(user, "<span class='warning'>[target_human] is alert. I can't pickpocket them like this.</span>")
 					return
 				// RATWOOD MODULAR END
+
 				if(user_human.get_active_held_item())
 					to_chat(user, span_warning("I can't pickpocket while my hand is full!"))
 					return
+
 				if(!(user.zone_selected in stealablezones))
 					to_chat(user, span_warning("What am I going to steal from there?"))
 					return
+
 				mobsbehind |= cone(target_human, list(turn(target_human.dir, 180)), list(user))
+
 				if(mobsbehind.Find(user) || target_human.IsUnconscious() || target_human.eyesclosed || target_human.eye_blind || target_human.eye_blurry || !(target_human.mobility_flags & MOBILITY_STAND))
 					switch(user_human.zone_selected)
 						if("chest")
@@ -54,6 +63,7 @@
 						if("r_hand", "l_hand")
 							if (target_human.get_item_by_slot(SLOT_RING))
 								stealpos.Add(target_human.get_item_by_slot(SLOT_RING))
+
 					if (length(stealpos) > 0)
 						var/obj/item/picked = pick(stealpos)
 						target_human.dropItemToGround(picked)
@@ -65,9 +75,9 @@
 							SEND_SIGNAL(user_human, COMSIG_ITEM_STOLEN, target_human)
 							record_featured_stat(FEATURED_STATS_THIEVES, user_human)
 							record_featured_stat(FEATURED_STATS_CRIMINALS, user_human)
-							GLOB.scarlet_round_stats[STATS_ITEMS_PICKPOCKETED]++
+							record_round_statistic(STATS_ITEMS_PICKPOCKETED)
 					else
-						exp_to_gain /= 2 // these can be removed or changed on reviewer's discretion
+						exp_to_gain /= 2
 						to_chat(user, span_warning("I didn't find anything there. Perhaps I should look elsewhere."))
 				else
 					to_chat(user, "<span class='warning'>They can see me!")
@@ -86,4 +96,5 @@
 			if(user != target_human && target_human.stat == CONSCIOUS)
 				user.mind.add_sleep_experience(/datum/skill/misc/stealing, exp_to_gain, FALSE)
 			user.changeNext_move(clickcd)
+
 	. = ..()

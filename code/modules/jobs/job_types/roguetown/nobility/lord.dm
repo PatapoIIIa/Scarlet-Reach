@@ -53,6 +53,7 @@ GLOBAL_LIST_EMPTY(lord_titles)
 /datum/job/roguetown/lord/after_spawn(mob/living/L, mob/M, latejoin = TRUE)
 	. = ..()
 	if(L)
+		var/mob/living/carbon/human/H = L
 		var/list/chopped_name = splittext(L.real_name, " ")
 		if(length(chopped_name) > 1)
 			chopped_name -= chopped_name[1]
@@ -73,6 +74,11 @@ GLOBAL_LIST_EMPTY(lord_titles)
 		addtimer(CALLBACK(L, TYPE_PROC_REF(/mob, lord_marriage_choice)), 50)
 		if(STATION_TIME_PASSED() <= 10 MINUTES) //Late to the party? Stuck with default colors, sorry!
 			addtimer(CALLBACK(L, TYPE_PROC_REF(/mob, lord_color_choice)), 50)
+
+		if(H.gender == MALE)
+			SSfamilytree.AddRoyal(H, FAMILY_FATHER)
+		else
+			SSfamilytree.AddRoyal(H, FAMILY_MOTHER)
 
 /datum/outfit/job/roguetown/lord
 	neck = /obj/item/storage/belt/rogue/pouch/coins/rich

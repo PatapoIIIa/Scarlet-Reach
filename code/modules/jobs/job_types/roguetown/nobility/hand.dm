@@ -40,6 +40,11 @@
 				return TRUE
 */
 
+/datum/job/roguetown/hand/after_spawn(mob/living/spawned, client/player_client)
+	. = ..()
+	var/mob/living/carbon/human/H = spawned
+	addtimer(CALLBACK(SSfamilytree, TYPE_PROC_REF(/datum/controller/subsystem/familytree, AddRoyal), H, FAMILY_OMMER), 10 SECONDS)
+
 /datum/outfit/job/roguetown/hand
 	shoes = /obj/item/clothing/shoes/roguetown/boots
 	belt = /obj/item/storage/belt/rogue/leather/steel

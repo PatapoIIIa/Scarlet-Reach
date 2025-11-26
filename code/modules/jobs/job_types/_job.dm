@@ -234,6 +234,10 @@
 
 	if(social_rank)
 		H.social_rank = social_rank
+	if(istype(H, /mob/living/carbon/human))
+		var/mob/living/carbon/human/Hu = H
+		if(Hu.familytree_pref != FAMILY_NONE && !Hu.family_datum)
+			SSfamilytree.AddLocal(H, Hu.familytree_pref)
 
 	if(H.mind.special_role == "Court Agent" || H.mind.assigned_role == "Bandit" || H.mind.assigned_role == "Wretch") //For obfuscating Court Agents & Bandits in Actors list
 		if (istype(H, /mob/living/carbon/human)) //For determining if the actor has a species name to display

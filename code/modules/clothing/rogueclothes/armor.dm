@@ -1164,8 +1164,11 @@
 	item_state = "heartfelt_hand"
 
 /obj/item/clothing/suit/roguetown/armor/heartfelt/knight
+	icon = 'icons/roguetown/clothing/special/blkknight.dmi'
+	mob_overlay_icon = 'icons/roguetown/clothing/special/onmob/blkknight.dmi'
+	sleeved = 'icons/roguetown/clothing/special/onmob/blkknight.dmi'
 	icon_state = "bkarmor"
-	item_state = "plate"
+	item_state = "bkarmor"
 	color = "#550000"
 
 /obj/item/clothing/suit/roguetown/armor/brigandine/heartfelt //Using brigandine for fancy coloring

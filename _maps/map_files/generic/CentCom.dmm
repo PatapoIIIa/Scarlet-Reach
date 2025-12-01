@@ -4382,6 +4382,10 @@
 /obj/machinery/light/rogue/torchholder/l,
 /turf/open/floor/rogue/wood,
 /area/rogue/outdoors/banditcamp)
+"ZB" = (
+/obj/structure/ichor_stone,
+/turf/open/floor/carpet/inn,
+/area/rogue/indoors/vampire_manor)
 "ZC" = (
 /obj/structure/fermentation_keg/random/water,
 /turf/open/floor/rogue/hexstone,
@@ -15550,7 +15554,7 @@ Fj
 Yx
 oZ
 gX
-oZ
+ZB
 Fj
 yv
 pw

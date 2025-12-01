@@ -1121,7 +1121,7 @@
 	update_hud_handcuffed()
 	update_mobility()
 
-/mob/living/carbon/fully_heal(admin_revive = FALSE)
+/mob/living/carbon/fully_heal(admin_revive = FALSE, break_restraints = FALSE)
 	if(reagents)
 		reagents.clear_reagents()
 		for(var/addi in reagents.addiction_list)
@@ -1143,17 +1143,18 @@
 		suiciding = FALSE
 		regenerate_limbs()
 		regenerate_organs()
+		if(reagents)
+			reagents.addiction_list = list()
+	if(break_restraints)
 		handcuffed = initial(handcuffed)
 		for(var/obj/item/restraints/R in contents) //actually remove cuffs from inventory
 			qdel(R)
 		update_handcuffed()
-		if(reagents)
-			reagents.addiction_list = list()
 	cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
 	var/list/wCount = get_wounds()
 	if(wCount.len > 0)
 		heal_wounds(INFINITY)
-	..()
+	. = ..()
 	// heal ears after healing traits, since ears check TRAIT_DEAF trait
 	// when healing.
 	restoreEars()

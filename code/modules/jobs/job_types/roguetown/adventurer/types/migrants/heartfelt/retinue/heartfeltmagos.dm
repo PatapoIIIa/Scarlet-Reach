@@ -67,7 +67,6 @@
 		H.change_stat("speed", -1)
 		H.change_stat("intelligence", 1)
 		H.change_stat("perception", 1)
-	if(H.mind)
 		H?.mind.adjust_spellpoints(6)
 	if(ishumannorthern(H))
 		belt = /obj/item/storage/belt/rogue/leather/plaquegold

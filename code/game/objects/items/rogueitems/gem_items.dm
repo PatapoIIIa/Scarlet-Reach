@@ -162,7 +162,7 @@
 	grid_width = 32
 
 /obj/item/carvedgem/rose/rawrose
-	name = "raw rosellusk"
+	name = "rosellusk"
 	desc = "Pink and lustrous, these pearls produced by fossilized clamshells are valued by Eorans: and are usually gifted to expecting mothers and newlyweds."
 	icon_state = "raw_rose"
 	grid_height = 32

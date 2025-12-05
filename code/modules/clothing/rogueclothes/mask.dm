@@ -685,7 +685,7 @@
 
 //gemcarved masks from Vanderlin.
 
-/obj/item/clothing/face/carved
+/obj/item/clothing/mask/rogue/facemask/carved
 	name = "carved mask"
 	icon_state = "ancientmask"
 	desc = "You shouldn't be seeing this."
@@ -703,55 +703,55 @@
 	clothing_flags = CANT_SLEEP_IN
 	sellprice = 70
 
-/obj/item/clothing/face/carved/jademask
+/obj/item/clothing/mask/rogue/facemask/carved/jademask
 	name = "joapstone mask "
 	icon_state = "mask_jade"
 	desc = "A joapstone mask that both conceals and protects the face."
 	sellprice = 70
 
-/obj/item/clothing/face/carved/jademask
+/obj/item/clothing/mask/rogue/facemask/carved/jademask
 	name = "joapstone mask"
 	icon_state = "mask_jade"
 	desc = "A joapstone mask that both conceals and protects the face."
 	sellprice = 70
 
-/obj/item/clothing/face/carved/turqmask
+/obj/item/clothing/mask/rogue/facemask/carved/turqmask
 	name = "ceruleabaster mask"
 	icon_state = "mask_turq"
 	desc = "A ceruleabaster mask that both conceals and protects the face."
 	sellprice = 95
 
-/obj/item/clothing/face/carved/rosemask
+/obj/item/clothing/mask/rogue/facemask/carved/rosemask
 	name = "rosellusk mask"
 	icon_state = "mask_rose"
 	desc = "A rosellusk mask that both conceals and protects the face."
 	sellprice = 35
 
-/obj/item/clothing/face/carved/shellmask
+/obj/item/clothing/mask/rogue/facemask/carved/shellmask
 	name = "shell mask"
 	icon_state = "mask_shell"
 	desc = "A shell mask that both conceals and protects the face."
 	sellprice = 30
 
-/obj/item/clothing/face/carved/coralmask
+/obj/item/clothing/mask/rogue/facemask/carved/coralmask
 	name = "aoetal mask"
 	icon_state = "mask_coral"
 	desc = "An aoetal mask that both conceals and protects the face."
 	sellprice = 80
 
-/obj/item/clothing/face/carved/ambermask
+/obj/item/clothing/mask/rogue/facemask/carved/ambermask
 	name = "petriamber mask"
 	icon_state = "mask_amber"
 	desc = "A petriamber mask that both conceals and protects the face."
 	sellprice = 70
 
-/obj/item/clothing/face/carved/onyxamask
+/obj/item/clothing/mask/rogue/facemask/carved/onyxamask
 	name = "onyxa mask"
 	icon_state = "mask_onyxa"
 	desc = "An onyxa mask that both conceals and protects the face."
 	sellprice = 50
 
-/obj/item/clothing/face/carved/opalmask
+/obj/item/clothing/mask/rogue/facemask/carved/opalmask
 	name = "opaloise mask"
 	icon_state = "mask_opal"
 	desc = "An opaloise mask that both conceals and protects the face."

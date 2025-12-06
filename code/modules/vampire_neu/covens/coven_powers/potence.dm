@@ -46,12 +46,10 @@
 
 /datum/coven_power/potence/one/activate()
 	. = ..()
-	owner.dna.species.punch_damage += 12
 	owner.potence_weapon_buff = 1
 
 /datum/coven_power/potence/one/deactivate()
 	. = ..()
-	owner.dna.species.punch_damage -= 12
 	owner.potence_weapon_buff = 0
 	owner.remove_overlay(POTENCE_LAYER)
 
@@ -62,7 +60,7 @@
 
 	level = 2
 	research_cost = 1
-	vitae_cost = 55
+	vitae_cost = 60
 	check_flags = COVEN_CHECK_CAPABLE
 
 	toggled = TRUE
@@ -70,12 +68,10 @@
 
 /datum/coven_power/potence/two/activate()
 	. = ..()
-	owner.dna.species.punch_damage += 15
 	owner.potence_weapon_buff = 2
 
 /datum/coven_power/potence/two/deactivate()
 	. = ..()
-	owner.dna.species.punch_damage -= 15
 	owner.potence_weapon_buff = 0
 	owner.remove_overlay(POTENCE_LAYER)
 
@@ -86,20 +82,18 @@
 
 	level = 3
 	research_cost = 2
-	vitae_cost = 60
+	vitae_cost = 70
 	check_flags = COVEN_CHECK_CAPABLE
 	toggled = TRUE
 	duration_length = 2 TURNS
 
 /datum/coven_power/potence/three/activate()
 	. = ..()
-	owner.dna.species.punch_damage += 18
 	owner.potence_weapon_buff = 3
 
 
 /datum/coven_power/potence/three/deactivate()
 	. = ..()
-	owner.dna.species.punch_damage -= 18
 	owner.potence_weapon_buff = 0
 	owner.remove_overlay(POTENCE_LAYER)
 
@@ -110,19 +104,17 @@
 
 	level = 4
 	research_cost = 3
-	vitae_cost = 65
+	vitae_cost = 80
 	check_flags = COVEN_CHECK_CAPABLE
 	toggled = TRUE
 	duration_length = 2 TURNS
 
 /datum/coven_power/potence/four/activate()
 	. = ..()
-	owner.dna.species.punch_damage += 21
 	owner.potence_weapon_buff = 4
 
 /datum/coven_power/potence/four/deactivate()
 	. = ..()
-	owner.dna.species.punch_damage -= 21
 	owner.potence_weapon_buff = 0
 	owner.remove_overlay(POTENCE_LAYER)
 
@@ -134,18 +126,16 @@
 
 	level = 5
 	research_cost = 4
-	vitae_cost = 70
+	vitae_cost = 90
 	check_flags = COVEN_CHECK_CAPABLE
 	toggled = TRUE
 	duration_length = 2 TURNS
 
 /datum/coven_power/potence/five/activate()
 	. = ..()
-	owner.dna.species.punch_damage += 24
 	owner.potence_weapon_buff = 5
 
 /datum/coven_power/potence/five/deactivate()
 	. = ..()
-	owner.dna.species.punch_damage -= 24
 	owner.potence_weapon_buff = 0
 	owner.remove_overlay(POTENCE_LAYER)

@@ -917,37 +917,37 @@
 	verbage_simple = "build"
 	verbage = "builds"
 	skillcraft = /datum/skill/craft/masonry
-	wallcraft = TRUE
+	wallcraft = FALSE
 	craftdiff = 0
 
-	/datum/crafting_recipe/roguetown/structure/floorcandlealt
+	/datum/crafting_recipe/roguetown/structure/floorcandle/alt
 	name = "alt floor candles"
 	result = /obj/machinery/light/rogue/wallfire/candle/floorcandle/alt
 	reqs = list(/obj/item/candle/yellow = 2)
 	verbage_simple = "build"
 	verbage = "builds"
 	skillcraft = /datum/skill/craft/masonry
-	wallcraft = TRUE
+	wallcraft = FALSE
 	craftdiff = 0
 
-	/datum/crafting_recipe/roguetown/structure/flooreoracandle
+	/datum/crafting_recipe/roguetown/structure/floorcandle/pink
 	name = "eoran floor candles"
 	result = /obj/machinery/light/rogue/wallfire/candle/floorcandle/pink
 	reqs = list(/obj/item/candle/eora = 2)
 	verbage_simple = "build"
 	verbage = "builds"
 	skillcraft = /datum/skill/craft/masonry
-	wallcraft = TRUE
+	wallcraft = FALSE
 	craftdiff = 0
 
-	/datum/crafting_recipe/roguetown/structure/altflooreoracandle
+	/datum/crafting_recipe/roguetown/structure/floorecandle/alt/pink
 	name = "alt eoran floor candles"
 	result = /obj/machinery/light/rogue/wallfire/candle/floorcandle/alt/pink
 	reqs = list(/obj/item/candle/eora = 2)
 	verbage_simple = "build"
 	verbage = "builds"
 	skillcraft = /datum/skill/craft/masonry
-	wallcraft = TRUE
+	wallcraft = FALSE
 	craftdiff = 0
 
 /datum/crafting_recipe/roguetown/structure/wallcandle

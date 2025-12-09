@@ -305,17 +305,24 @@
 				HU.changeNext_move(0.5 SECONDS)
 				return
 
-		// RMB on mob (priority 1): check to see if a bait has any chance to succeed (match targeting zones between us and the target), if so, attempt it (ONLY check for matching zones, nothing else).
 		if (ishuman(target))
 			var/mob/living/carbon/human/HT = target
 			var/target_zone = HT.zone_selected
 			var/user_zone = HU.zone_selected
+
+			// RMB on mob (priority 1): is the target off-balance and not knocked over? if so, kick them over.
+			if (HT.IsOffBalanced() && (HT.mobility_flags & MOBILITY_STAND))
+				HU.try_kick(target)
+				HU.changeNext_move(0.5 SECONDS)
+				return
+
+			// RMB on mob (priority 2): check to see if a bait has any chance to succeed (match targeting zones between us and the target), if so, attempt it (ONLY check for matching zones, nothing else).
 			if (target_zone == user_zone)
 				HU.attempt_bait(user, target)
 				HU.changeNext_move(0.5 SECONDS)
 				return
 		
-		// RMB on mob (priority 2): attempt a feint if possible and off cooldown.
+		// RMB on mob (priority 3): attempt a feint if possible and off cooldown.
 		if (!HU.has_status_effect(/datum/status_effect/debuff/feintcd))
 			HU.attempt_feint(user, target)
 			HU.changeNext_move(0.5 SECONDS)

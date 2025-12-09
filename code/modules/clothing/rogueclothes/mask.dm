@@ -443,6 +443,7 @@
 /obj/item/clothing/mask/rogue/facemask/steel/kazengun/full/kitsune
 	desc = "A steel mask of Kazengun origin. Cast in the visage of a vulpine monster, it fits snugly around the neck, offering additional protection at the cost of head mobility."
 	icon_state = "kitsuneyoroi"
+	body_parts_covered = FACE
 
 /obj/item/clothing/mask/rogue/facemask/steel/paalloy
 	name = "ancient mask"

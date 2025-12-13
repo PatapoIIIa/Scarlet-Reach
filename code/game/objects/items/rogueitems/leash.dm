@@ -440,7 +440,7 @@
 	last_ring = world.time
 
 /obj/item/catbell/cow/attack_self(mob/living/user)
-	if(world.time < last_ring + 200) //Bells are have a dangling weight, and because I don't want to go insane
+	if(world.time < last_ring + 400) //Bells are have a dangling weight, and because I don't want to go insane
 		return
 	user.visible_message(span_info("[user] starts ringing the [src]."))
 	playsound(src, 'sound/items/cowbell1.ogg', 100, extrarange = 8, ignore_walls = TRUE)

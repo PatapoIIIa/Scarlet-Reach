@@ -373,6 +373,12 @@
 // /obj/item/bodypart on_mob_life() retval flag
 #define BODYPART_LIFE_UPDATE_HEALTH (1<<0)
 
+// Pending icon update bitflags for deferred batching
+#define PENDING_UPDATE_BODY       (1<<0)
+#define PENDING_UPDATE_HAIR       (1<<1)
+#define PENDING_UPDATE_DAMAGE     (1<<2)
+#define PENDING_UPDATE_INV        (1<<3)
+
 #define MAX_REVIVE_FIRE_DAMAGE 180
 #define MAX_REVIVE_BRUTE_DAMAGE 180
 

@@ -1552,3 +1552,13 @@ GLOBAL_LIST_EMPTY(headshot_cache)
 		"html" = icon_html
 	)
 	return icon_html
+
+/proc/get_cached_damage_overlay(icon, icon_state, layer, pixel_x = 0, pixel_y = 0)
+	var/key = "[icon]|[icon_state]|[layer]|[pixel_x]|[pixel_y]"
+	var/mutable_appearance/cached = GLOB.damage_overlay_cache[key]
+	if(!cached)
+		cached = mutable_appearance(icon, icon_state, -layer)
+		cached.pixel_x = pixel_x
+		cached.pixel_y = pixel_y
+		GLOB.damage_overlay_cache[key] = cached
+	return cached

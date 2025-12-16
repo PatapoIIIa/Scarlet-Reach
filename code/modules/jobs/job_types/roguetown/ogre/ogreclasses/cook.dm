@@ -30,7 +30,7 @@
 
 /datum/outfit/job/roguetown/ogre/cook/pre_equip(mob/living/carbon/human/H)
 	..()
-	armor = /obj/item/clothing/cloak/apron/ogre
+	cloak = /obj/item/clothing/cloak/apron/ogre
 	shirt = /obj/item/clothing/suit/roguetown/shirt/ogre
 	head = /obj/item/clothing/head/roguetown/cookhat/ogre
 	gloves = /obj/item/clothing/gloves/roguetown/leather/ogre

@@ -137,6 +137,9 @@
 				to_chat(user, span_warning("I can't repair that with a needle."))
 				return
 
+			if (HAS_TRAIT(user, TRAIT_SQUIRE_REPAIR)) // squires are always considered skilled w/o other bonuses for the purposes of repair
+				unskilled = FALSE
+
 			// if we're stupid and the object isn't broken and it's had a field repair, we can't fix it any further for the moment
 			if (unskilled && !cloth.obj_broken && cloth.shoddy_repair && integrity_percentage >= 60)
 				to_chat(user, span_warning("I can't do anything else to fix this right now - I should see a skilled craftsman."))

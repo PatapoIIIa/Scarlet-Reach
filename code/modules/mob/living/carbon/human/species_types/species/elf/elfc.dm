@@ -5,6 +5,7 @@
 	name = "Sun Elf"
 	id = "elfc"
 	is_subrace = TRUE
+	psydonic = TRUE
 	origin_default = /datum/virtue/origin/raneshen
 	origin = "Raneshen"
 	base_name = "Elf"
@@ -118,6 +119,7 @@
 		"Morning" = SKIN_COLOR_MORNING,
 		"Noon" = SKIN_COLOR_NOON,
 		"Evening" = SKIN_COLOR_EVENING,
+		"Sunset" = SKIN_COLOR_SUNSET,
 		"Dusk" = SKIN_COLOR_DUSK,
 	)
 
@@ -127,40 +129,49 @@
 		"Morning <span style='border: 1px solid #161616; background-color: #[SKIN_COLOR_MORNING];'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>" = SKIN_COLOR_MORNING,
 		"Noon <span style='border: 1px solid #161616; background-color: #[SKIN_COLOR_NOON];'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>" = SKIN_COLOR_NOON,
 		"Evening <span style='border: 1px solid #161616; background-color: #[SKIN_COLOR_EVENING];'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>" = SKIN_COLOR_EVENING,
+		"Sunset <span style='border: 1px solid #161616; background-color: #[SKIN_COLOR_SUNSET];'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>" = SKIN_COLOR_SUNSET,
 		"Dusk <span style='border: 1px solid #161616; background-color: #[SKIN_COLOR_DUSK];'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>" = SKIN_COLOR_DUSK,
 	)
 
 /datum/species/elf/sun/get_hairc_list()
 	return sortList(list(
-	"black - oil" = "181a1d",
-	"black - cave" = "201616",
-	"black - rogue" = "2b201b",
-	"black - midnight" = "1d1b2b",
+	"blond - pale" = "9d8d6e",
+	"blond - dirty" = "88754f",
+	"blond - drywheat" = "d5ba7b",
+	"blond - strawberry" = "c69b71",
 
-	"white - cavedew" = "dee9ed",
-	"white - spiderweb" = "f4f4f4"
+	"brown - mud" = "362e25",
+	"brown - oats" = "584a3b",
+	"brown - grain" = "58433b",
+	"brown - soil" = "48322a",
+
+	"red - berry" = "48322a",
+	"red - wine" = "82534c",
+	"red - sunset" = "82462b",
+	"red - blood" = "822b2b",
 
 	))
 
 /datum/species/elf/sun/random_name(gender,unique,lastname)
+
 	var/randname
 	if(unique)
 		if(gender == MALE)
 			for(var/i in 1 to 10)
-				randname = pick( world.file2list("strings/rt/names/elf/elfdm.txt") )
+				randname = pick( world.file2list("strings/rt/names/elf/elfwm.txt") )
 				if(!findname(randname))
 					break
 		if(gender == FEMALE)
 			for(var/i in 1 to 10)
-				randname = pick( world.file2list("strings/rt/names/elf/elfdf.txt") )
+				randname = pick( world.file2list("strings/rt/names/elf/elfwf.txt") )
 				if(!findname(randname))
 					break
 	else
 		if(gender == MALE)
-			randname = pick( world.file2list("strings/rt/names/elf/elfdm.txt") )
+			randname = pick( world.file2list("strings/rt/names/elf/elfwm.txt") )
 		if(gender == FEMALE)
-			randname = pick( world.file2list("strings/rt/names/elf/elfdf.txt") )
+			randname = pick( world.file2list("strings/rt/names/elf/elfwf.txt") )
 	return randname
 
 /datum/species/elf/sun/random_surname()
-	return " [pick(world.file2list("strings/rt/names/elf/elfsnf.txt"))]"
+	return " [pick(world.file2list("strings/rt/names/elf/elfwlast.txt"))]"

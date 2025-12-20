@@ -93,9 +93,10 @@
 				H.adjust_skillrank_up_to(/datum/skill/combat/wrestling, 3, TRUE)
 				H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, 2, TRUE)
 				H.adjust_skillrank_up_to(/datum/skill/craft/traps, 3, TRUE)			//Ditto
+				H.change_stat(STATKEY_STR, 2) // they literally NEED this, both their weapons are strength oriented, dodge is a very secondary option considering jman shields
 				H.change_stat(STATKEY_CON, 2)
-				H.change_stat(STATKEY_END, 3)
-				H.change_stat(STATKEY_SPD, 2)
+				H.change_stat(STATKEY_END, 1)
+				H.change_stat(STATKEY_SPD, 1)
 				ADD_TRAIT(H, TRAIT_DODGEEXPERT, TRAIT_GENERIC)
 				H.dna.species.soundpack_m = new /datum/voicepack/male/evil() //Dodge builds are evil
 				var/weapons = list("Handclaws","Dual Handaxes")

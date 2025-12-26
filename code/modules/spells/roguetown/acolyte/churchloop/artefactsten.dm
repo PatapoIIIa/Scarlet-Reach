@@ -1347,10 +1347,16 @@ Necra's Censer (by ARefrigerator)
 	if(!istype(user, /mob/living/carbon/human))
 		to_chat(user, span_warning("The Star rejects an unworthy bearer."))
 		return
+	if(!target.client)
+		to_chat(user, span_warning("[target.name] cannot accept the rite without a soul to answer (no client)."))
+		return
+
 	var/mob/living/carbon/human/C = user
 
-	if(C.church_favor < 500)
-		to_chat(C, span_warning("Your faith lacks the strength. (500 Favor required, you have [C.church_favor].)"))
+	var/cost = HAS_TRAIT(target, TRAIT_CLERGY) ? 1000 : 0
+
+	if(cost > 0 && C.church_favor < cost)
+		to_chat(C, span_warning("Your faith lacks the strength. ([cost] Favor required, you have [C.church_favor].)"))
 		return
 
 	user.visible_message(
@@ -1365,39 +1371,42 @@ Necra's Censer (by ARefrigerator)
 		)
 		to_chat(target, span_notice("The light fades as the ritual is broken."))
 		return
+
 	var/list/divine_options = list()
 	for(var/path in ALL_DIVINE_PATRONS)
 		var/datum/patron/divine/instance = new path
 		if(instance && instance.name)
 			divine_options[instance.name] = path
 		qdel(instance)
+
 	if(!divine_options || !divine_options.len)
 		to_chat(user, span_warning("No divine patrons are available."))
 		return
+
 	var/choice = input(target, "The star opens your soul. Choose your patron, or refuse.", "The Ten") as null|anything in divine_options
 	if(!choice)
 		to_chat(target, span_danger("You turn away from the light."))
 		to_chat(user, span_danger("[target.name] rejects the offered path."))
 		return
-	if(C.church_favor < 500)
+
+	if(cost > 0 && C.church_favor < cost)
 		to_chat(C, span_warning("In that moment of revelation, your Favor has run dry. The rite fizzles."))
 		to_chat(target, span_warning("The light flickers and dies before the vow can take hold."))
 		return
+
 	var/patron_path = divine_options[choice]
 	if(patron_path)
-		if(ismob(target) && istype(target, /mob/living/carbon/human))
-			var/mob/living/carbon/human/T = target
-			if(hascall(T, "set_patron"))
-				call(T, "set_patron")(patron_path)
-			else
-				if(hascall(global, "set_patron")) //the coder is aretard i dont want runtimes
-					call(global, "set_patron")(T, patron_path)
+		if(hascall(target, "set_patron"))
+			call(target, "set_patron")(patron_path)
+		else
+			to_chat(user, span_warning("This soul cannot be marked (set_patron not found).")) //dont blame me for this whole thing im a retard
+			return
 
-		C.church_favor = max(0, C.church_favor - 500)
+		if(cost > 0)
+			C.church_favor = max(0, C.church_favor - cost)
+
 		user.visible_message(
 			span_notice("[target.name] accepts the mark of [choice]."),
-			span_notice("[target.name] accepts the mark of [choice]. The ritual is sealed, costing you 500 Favor.")
+			span_notice("[target.name] accepts the mark of [choice]. The ritual is sealed[cost > 0 ? ", costing you [cost] Favor" : ""].")
 		)
 		to_chat(target, span_notice("You feel the mark of [choice] settle in your soul."))
-
-	return

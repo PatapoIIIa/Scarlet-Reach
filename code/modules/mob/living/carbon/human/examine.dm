@@ -914,7 +914,7 @@
 		. += "<a href='?src=[REF(src)];task=view_headshot;'>Examine closer</a> [showassess ? " | <a href='?src=[REF(src)];task=assess;'>Assess</a>" : ""]"
 		//tiny picture when you are not examining closer, shouldnt take too much space.
 	//Rumours & Gossip
-	if((!obscure_name) && (rumour && length(rumour)) || (rumour_noble && HAS_TRAIT(user, TRAIT_NOBLE) && length(rumour_noble)))
+	if((!obscure_name) && (rumour && length(rumour)) || (rumour_noble && (HAS_TRAIT(user, TRAIT_NOBLE) || HAS_TRAIT(user, TRAIT_ROYALSERVANT)) && length(rumour_noble)))
 		. += "<a href='?src=[REF(src)];task=view_rumours_gossip;'>Recall Rumours & Gossip</a>"
 
 	var/list/lines

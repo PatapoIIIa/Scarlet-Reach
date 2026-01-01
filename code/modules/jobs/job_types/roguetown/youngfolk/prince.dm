@@ -33,6 +33,10 @@
 		/datum/advclass/heir/inbred,
 	)
 
+	virtue_restrictions = list(
+		/datum/virtue/heretic/zchurch_keyholder
+	)
+
 /datum/job/roguetown/prince/after_spawn(mob/living/carbon/spawned, client/player_client)
 	. = ..()
 	var/mob/living/carbon/human/H = spawned

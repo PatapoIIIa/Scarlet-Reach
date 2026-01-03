@@ -111,7 +111,7 @@
 			if(B.stacktype == R.item_type)
 				var/nopay = R.held_items[stockpile_index] >= R.stockpile_limit // Check whether it is overflowed BEFORE nopaying them
 				R.held_items[stockpile_index] += B.amount
-				if(R.category == "Foodstuffs" || R.category == "Fruits")
+				if((R.category == "Foodstuffs" || R.category == "Fruits") && !I.from_stockpile)
 					if(R.farmers[H])
 						R.farmers[H] += B.amount
 					else
@@ -141,7 +141,7 @@
 			if(!R.mint_item)
 				R.held_items[stockpile_index] += 1 //stacked logs need to check for multiple
 				qdel(I)
-				if(R.category == "Foodstuffs" || R.category == "Fruits")
+				if((R.category == "Foodstuffs" || R.category == "Fruits") && !I.from_stockpile)
 					if(R.farmers[H])
 						R.farmers[H] += 1
 					else

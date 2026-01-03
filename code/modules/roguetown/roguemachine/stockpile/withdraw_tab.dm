@@ -84,6 +84,7 @@
 					D.held_items[source_stockpile]--
 					SStreasury.log_to_steward("-[D.withdraw_price]m worth of goods withdrawn direct from vomitorium (keep stipend)")
 					var/obj/item/I = new D.item_type(parent_structure.loc)
+					I.from_stockpile = TRUE
 					to_chat(user, span_info("[parent_structure] chitters and squeaks into the treasury ratlines."))
 					if(!user.put_in_hands(I))
 						I.forceMove(get_turf(user))
@@ -96,6 +97,7 @@
 			D.held_items[source_stockpile]--
 			budget -= total_price
 			var/obj/item/I = new D.item_type(parent_structure.loc)
+			I.from_stockpile = TRUE
 			var/mob/user = usr
 			if(!user.put_in_hands(I))
 				I.forceMove(get_turf(user))

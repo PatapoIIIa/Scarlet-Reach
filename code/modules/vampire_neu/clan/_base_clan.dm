@@ -555,7 +555,7 @@ And it also helps for the character set panel
 
 /atom/movable/screen/alert/status_effect/buff/crimson_curse_blood
 	name = "Sanguine Curse"
-	desc = span_good("Crimson Curse is a joke. Yet, their blood is surprisingly exquisite and nourishing!")
+	desc = span_good("I have consumed the sweet vitae of one cursed by dark magicks; a blemish upon Kaine's name is justly expunged from this realm!")
 	icon_state = "bloodheal"
 
 /datum/status_effect/buff/crimson_curse_blood/on_apply()

@@ -72,9 +72,6 @@
 		if(HAS_TRAIT(src, TRAIT_CRIMSON_CURSE))
 			to_chat(src, span_warning("I am too weak to commit Diablerie!."))
 			return
-		if(HAS_TRAIT(victim, TRAIT_CRIMSON_CURSE))
-			to_chat(src, span_warning("Their vitae is too weak for Diablerie!"))
-			return
 		to_chat(src, span_userdanger("<b>YOU TRY TO COMMIT DIABLERIE ON [victim].</b>"))
 
 	var/blood_handle
@@ -86,8 +83,11 @@
 	if(victim.job in list("Priest", "Priestess", "Cleric", "Acolyte", "Templar", "Churchling", "Crusader", "Inquisitor"))
 		blood_handle |= BLOOD_PREFERENCE_HOLY
 	if(VVictim)
-		blood_handle |= BLOOD_PREFERENCE_KIN
-		blood_handle  &= ~BLOOD_PREFERENCE_LIVING
+		if(VVictim.generation == GENERATION_FAILVAMP)
+			blood_handle |= BLOOD_PREFERENCE_CC
+		else
+			blood_handle |= BLOOD_PREFERENCE_KIN
+			blood_handle  &= ~BLOOD_PREFERENCE_LIVING
 
 	clan.handle_bloodsuck(src, blood_handle)
 
@@ -112,7 +112,20 @@
 			if(VVictim.generation > VDrinker.generation)
 				VDrinker.generation = VVictim.generation
 			VDrinker.research_points += VVictim.research_spent
-			victim.death()
+			if(VVictim.generation == GENERATION_FAILVAMP)
+				to_chat(src, span_userdanger("That was not my kindred! An abomination, abhorrent and unnatural. Crimson cursed one..."))
+				to_chat(victim, span_userdanger("Your breath catches when you realize it is the end. The curse has left your body, along with vitae sucked by the foul [src]!"))
+				VDrinker.research_points += RP_PER_CC_DIABLERIE
+				var/choice = alert(src, "I have sucked this crimson cursed one dry. Yet, some droplets remain. I can squeeze them out, but they will die. Wonder whether I should proceed...", "THE CURSE OF KAIN", "MAKE IT SO", "I RESCIND")
+				if(choice == "MAKE IT SO" && istype(VDrinker) && victim.stat && Adjacent(victim))
+					to_chat(src, span_userdanger("The die is cast. The final droplet. This one shall perish."))
+					victim.emote("agony", forced = TRUE)
+					to_chat(victim, span_userdanger("The last droplet of vitae is squeezed out of your body. Your heart is freed from the crimson curse. It makes its first and last beat. Thus ends your story."))
+					victim.dust(just_ash = TRUE, drop_items = TRUE, force = TRUE)
+				else
+					VVictim.on_removal()
+			else
+				victim.death()
 			victim.adjustBruteLoss(-50, TRUE)
 			victim.adjustFireLoss(-50, TRUE)
 			return

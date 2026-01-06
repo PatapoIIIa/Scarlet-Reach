@@ -320,7 +320,7 @@
 /datum/status_effect/buff/magearmor/on_apply()
 	. = ..()
 	playsound(owner, 'sound/magic/magearmordown.ogg', 75, FALSE)
-	duration = (7-owner.get_skill_level(/datum/skill/magic/arcane)) MINUTES
+	duration = (30 - (owner.get_skill_level(/datum/skill/magic/arcane) * 2.5)) SECONDS
 
 /datum/status_effect/buff/magearmor/on_remove()
 	. = ..()
@@ -509,6 +509,10 @@
 	return ..()
 
 /datum/status_effect/buff/healing/on_apply()
+	if(owner.construct) //golems can't be healed by miracles cuz they're not living beans
+		owner.visible_message(span_warning("The divine aura enveloping [owner]'s inorganic body sputters and fades away."))
+		qdel(src)
+		return
 	SEND_SIGNAL(owner, COMSIG_LIVING_MIRACLE_HEAL_APPLY, healing_on_tick, src)
 	var/filter = owner.get_filter(MIRACLE_HEALING_FILTER)
 	if (!filter)
@@ -530,15 +534,13 @@
 	var/obj/effect/temp_visual/heal/H = new /obj/effect/temp_visual/heal_rogue(get_turf(owner))
 	H.color = "#FF0000"
 	var/list/wCount = owner.get_wounds()
-	if(owner.construct) //golems can't be healed by miracles cuz they're not living beans
-		owner.visible_message(span_warning("The divine aura enveloping [owner]'s inorganic body sputters and fades away."))
-		qdel(src)
-		return
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		owner.blood_volume = min(owner.blood_volume+healing_on_tick, BLOOD_VOLUME_NORMAL)
 	if(wCount.len > 0)
 		owner.heal_wounds(healing_on_tick)
 		owner.update_damage_overlays()
+	if(HAS_TRAIT(owner, TRAIT_SIMPLE_WOUNDS))
+		owner.simple_bleeding = max(0, owner.simple_bleeding-(healing_on_tick/2))
 	owner.adjustBruteLoss(-healing_on_tick, 0)
 	owner.adjustFireLoss(-healing_on_tick, 0)
 	owner.adjustOxyLoss(-healing_on_tick, 0)
@@ -1606,3 +1608,12 @@
 	alert_type = /atom/movable/screen/alert/status_effect/buff
 	effectedstats = list(STATKEY_SPD = 3, STATKEY_END = 1, STATKEY_CON = 1)
 	status_type = STATUS_EFFECT_REPLACE
+
+/datum/status_effect/buff/merchired
+	id = "merchired"
+	alert_type = /atom/movable/screen/alert/status_effect/buff/merchired
+
+/atom/movable/screen/alert/status_effect/buff/merchired
+	name = "Hired!"
+	desc = "I have an active contract. I must be vigilant and ready at all tymes."
+	icon_state = "buff"

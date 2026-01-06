@@ -145,10 +145,12 @@
 /datum/circle_rite/astrata
 	rites_list = list(
 		/datum/circle_rite/astrata/guiding_light,
+		/datum/circle_rite/astrata/suns_blessing,
 //		/datum/circle_rite/astrata/debug,
 	)
 	rites_list_string = list(
 		"Guiding Light",
+		"Sun's Shield",
 //		"Debug",
 	)
 	rituals_name = "Rituals of the Sun"
@@ -175,7 +177,7 @@
 	var/ritualtargets = view(7, linked_circle.loc)
 	for(var/mob/living/carbon/human/target in ritualtargets) // defines the target as every human in this range
 		target.apply_status_effect(/datum/status_effect/buff/guidinglight) // applies the status effect
-		to_chat(target, span_cultsmall("Astrata's light guides me forward, drawn to me by the Ritualist's pyre!"))
+		to_chat(target, span_astrata("Astrata's light guides me forward, drawn to me by the Ritualist's pyre!"))
 		playsound(target, 'sound/magic/holyshield.ogg', 80, FALSE, -1) // Cool sound!
 	user.apply_status_effect(cooldown)
 
@@ -198,6 +200,26 @@
 	to_chat(world, "cooldown is [cooldown]")
 	user.apply_status_effect(cooldown)
 
+/datum/circle_rite/astrata/suns_blessing
+	name = "Sun's Shield"
+	chant_strings = list(
+		"SUN-TYRANT. LET FYRE GUIDE MY GAZE!!",
+		"SOVEREIGN-SUPREME. YOUR WILL BE MYNE!!",
+		"ASTRATA. GIFT YOUR VESSEL AEGIS!!"
+	)
+	choose_host = TRUE
+	cooldown = /datum/status_effect/debuff/ritesexpended_low_very
+
+/datum/circle_rite/astrata/suns_blessing/rite_proc(mob/living/carbon/human/user)
+	if((rite_target.patron?.type) != /datum/patron/divine/astrata)
+		to_chat(user, span_warning("Astrata's blessing does not recognize [rite_target] as one of her faithful."))
+		to_chat(rite_target, span_warning("I am not recognized by Astrata's light."))
+		return
+	to_chat(user, span_astrata("Astrata's blessing descends upon [rite_target]!"))
+	to_chat(rite_target, span_astrata("Astrata's blessing fills you with radiant power. You can now shield yourself and your allies from flame!"))
+	rite_target.mind.AddSpell(new /obj/effect/proc_holder/spell/self/suns_shield)
+	user.apply_status_effect(cooldown)
+
 /obj/structure/ritualcircle/noc
 	name = "Rune of the Moon"
 	icon_state = "noc_chalky"
@@ -205,7 +227,7 @@
 	var/lunarrites = list("Moonlight Dance") // list for more to be added later
 
 /obj/structure/ritualcircle/noc/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/divine/noc)
+	if(!istype(user.patron, /datum/patron/divine/noc))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -250,7 +272,7 @@
 	var/plaguerites = list("Flylord's Triage", "Continuity")
 
 /obj/structure/ritualcircle/pestra/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/divine/pestra)
+	if(!istype(user.patron, /datum/patron/divine/pestra))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -376,7 +398,7 @@
 	var/bestialrites = list("Rite of the Lesser Wolf","Borrowed Madness","Spider Kinship")
 
 /obj/structure/ritualcircle/dendor/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/divine/dendor)
+	if(!istype(user.patron, /datum/patron/divine/dendor))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -483,7 +505,7 @@
 var/forgerites = list("Ritual of Blessed Reforgance")
 
 /obj/structure/ritualcircle/malum/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/divine/malum)
+	if(!istype(user.patron, /datum/patron/divine/malum))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -535,7 +557,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	icon_state = "abyssoralt_active" // change to abyssoralt_chalky if adding a new ritual, and use the active state instead for it.
 
 /obj/structure/ritualcircle/abyssor/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/divine/abyssor)
+	if(!istype(user.patron, /datum/patron/divine/abyssor))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -577,10 +599,10 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	name = "Rune of Death"
 	desc = "A Holy Rune of Necra. Quiet acceptance stirs within you."
 	icon_state = "necra_chalky"
-	var/deathrites = list("Undermaiden's Bargain", "Vow to the Undermaiden")
+	var/deathrites = list("Undermaiden's Bargain")
 
 /obj/structure/ritualcircle/necra/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/divine/necra)
+	if(!istype(user.patron, /datum/patron/divine/necra))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -610,52 +632,11 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 						user.apply_status_effect(/datum/status_effect/debuff/ritesexpended_high)
 						spawn(120)
 							icon_state = "necra_chalky"
-		if("Vow to the Undermaiden")
-			if(HAS_TRAIT(user, TRAIT_RITES_BLOCKED))
-				to_chat(user,span_smallred("I have performed enough rituals for the day... I must rest before communing more."))
-				return
-			if(user.construct)//golems can't benefit from miracles so they can't do this
-				to_chat(user,span_warning("My body is already cold and lifeless. I have nothing to pledge."))
-				return
-			loc.visible_message(span_warning("[user] sways before the rune, they open their mouth, though no words come out..."))
-			playsound(user, 'sound/vo/mobs/ghost/whisper (3).ogg', 100, FALSE, -1)
-			if(do_after(user, 60))
-				loc.visible_message(span_warning("[user] silently weeps, yet their tears do not flow..."))
-				playsound(user, 'sound/vo/mobs/ghost/whisper (1).ogg', 100, FALSE, -1)
-				if(do_after(user, 60))
-					loc.visible_message(span_warning("[user] locks up, as though someone had just grabbed them..."))
-					to_chat(user,span_danger("You feel cold breath on the back of your neck..."))
-					playsound(user, 'sound/vo/mobs/ghost/death.ogg', 100, FALSE, -1)
-					if(do_after(user, 20))
-						icon_state = "necra_active"
-						user.say("This soul pledges themselves to thee!!")
-						to_chat(user,span_cultsmall("My devotion to the Undermaiden has allowed me to anoint a vow for this soul...."))
-						if(undermaidenvow(src))
-							playsound(loc, 'sound/vo/mobs/ghost/moan (1).ogg', 100, FALSE, -1)
-							user.apply_status_effect(/datum/status_effect/debuff/ritesexpended_high)
-							spawn(120)
-								icon_state = "necra_chalky"
-						else
-							loc.visible_message(span_warning("Then... nothing. The Undermaiden does not care for the vows of the damned, or those of other faiths."))
-
-
 
 /obj/structure/ritualcircle/necra/proc/undermaidenbargain(src)
 	var/ritualtargets = view(7, loc)
 	for(var/mob/living/carbon/human/target in ritualtargets)
 		target.apply_status_effect(/datum/status_effect/buff/undermaidenbargain)
-	
-/obj/structure/ritualcircle/necra/proc/undermaidenvow(src)
-	var/ritualtargets = range(1, loc)
-	for(var/mob/living/carbon/human/target in ritualtargets)
-		if(HAS_TRAIT(target, TRAIT_ROTMAN) || HAS_TRAIT(target, TRAIT_NOBREATH) || target.mob_biotypes & MOB_UNDEAD)	//No Undead, no Rotcured, no Deathless
-			return FALSE
-		if(target.patron.type != /datum/patron/divine/necra)
-			return FALSE
-		target.apply_status_effect(/datum/status_effect/buff/necras_vow)
-		target.apply_status_effect(/datum/status_effect/buff/healing/necras_vow)
-		return TRUE
-	return FALSE
 
 /obj/structure/ritualcircle/eora
 	name = "Rune of Love"
@@ -665,7 +646,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	var/peacerites = list("Rite of Pacification")
 
 /obj/structure/ritualcircle/eora/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/divine/eora)
+	if(!istype(user.patron, /datum/patron/divine/eora))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -714,7 +695,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	var/zizorites = list("Rite of Armaments", "Rite of the Dark Crystal", "Path of Rituos")
 
 /obj/structure/ritualcircle/zizo/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/inhumen/zizo)
+	if(!istype(user.patron, /datum/patron/inhumen/zizo))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -878,6 +859,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 		ADD_TRAIT(target, TRAIT_BLOODLOSS_IMMUNE, "[type]")
 		ADD_TRAIT(target, TRAIT_LIMBATTACHMENT, "[type]")
 		ADD_TRAIT(target, TRAIT_EASYDISMEMBER, "[type]")
+		ADD_TRAIT(target, TRAIT_SILVER_WEAK, "[type]")
 		if (!HAS_TRAIT(target, TRAIT_ARCYNE_T3) && !HAS_TRAIT(target, TRAIT_ARCYNE_T4) || HAS_TRAIT(target, TRAIT_ARCYNE_T2))
 			REMOVE_TRAIT(target, TRAIT_ARCYNE_T2, "[type]")
 			ADD_TRAIT(target, TRAIT_ARCYNE_T3, "[type]")
@@ -926,7 +908,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 
 
 /obj/structure/ritualcircle/matthios/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/inhumen/matthios)
+	if(!istype(user.patron, /datum/patron/inhumen/matthios))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -1006,7 +988,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	var/graggarrites = list("Rite of Armaments", "War Ritual")
 
 /obj/structure/ritualcircle/graggar/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/inhumen/graggar)
+	if(!istype(user.patron, /datum/patron/inhumen/graggar))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))
@@ -1142,7 +1124,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	var/baotharites = list("Rite of Joy")
 
 /obj/structure/ritualcircle/baotha/attack_hand(mob/living/user)
-	if((user.patron?.type) != /datum/patron/inhumen/baotha)
+	if(!istype(user.patron, /datum/patron/inhumen/baotha))
 		to_chat(user,span_smallred("I don't know the proper rites for this..."))
 		return
 	if(!HAS_TRAIT(user, TRAIT_RITUALIST))

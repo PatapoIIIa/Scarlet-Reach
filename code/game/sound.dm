@@ -164,9 +164,10 @@
 	S.volume = vol2use
 
 	var/area/A = get_area(src)
-	if(A)
-		if(A.soundenv != -1)
-			S.environment = A.soundenv
+	if(A && A.soundenv != -1)
+		S.environment = A.soundenv
+	else if(!muffled)
+		S.environment = -1
 
 	if(vary)
 		S.frequency = get_rand_frequency()
@@ -202,9 +203,9 @@
 		// This is only necessary for sounds that play from
 		// outside the viewport, since sound.atom won't properly
 		// track their position relative to the client.
-		
+
 		// Note: world.view + 2 is not a magic number here - BYOND tracks atoms
-		// up to 2 turfs outside the viewport. Offsetting manually like this 
+		// up to 2 turfs outside the viewport. Offsetting manually like this
 		// is unlikely to be necessary for most sounds, but sounds with a massive range
 		// require it or they will always be played with infinite falloff (volume = 0)
 
@@ -212,19 +213,22 @@
 
 		var/dx = tracked ? 0 : source.x - T.x
 		var/dy = tracked ? 0 : source.y - T.y
-		
+
 		// Use a turf on the same zlevel as the client eye
 		// so the sound can be tracked by the client correctly. We will then apply
 		// z-distance attenuation on the client side via the projection matrix
 
+		var/atom/sound_atom = source
 		if(dz != 0)
-			source = locate(source.x, source.y, eyez)
+			sound_atom = locate(source.x, source.y, eyez)
 
 		// Use sound.atom for positional audio and let the engine handle volume falloff
 		// Skip sounds that are too far away to track and manually offset them instead.
 
 		if(!override && tracked)
-			S.atom = source
+			S.atom = sound_atom
+		else
+			S.atom = null
 
 		// OFFSET COMPENSATION using projection matrices
 		if(!override)
@@ -243,9 +247,10 @@
 			var/cy = xy*ex + yy*ey + dy
 			var/cz = xz*ex + yz*ey + dz * ZSOUND_DISTANCE_PER_Z
 			S.transform = list(xx,xy,xz,  yx,yy,yz,  cx,cy,cz)
+		else
+			S.transform = null
 
 		S.falloff = (falloff ? falloff : FALLOFF_SOUNDS)
-
 		// Apply z-level echo effect to muffle sounds across vertical distance
 		if(dz != 0)
 			var/env_offset = abs(dz) * ZSOUND_DRYLOSS_PER_Z
@@ -253,6 +258,8 @@
 			echo_list[ECHO_DIRECT] = env_offset // Reduce dry channel (unmixed sound)
 			echo_list[ECHO_ROOM] = 0
 			S.echo = echo_list
+		else
+			S.echo = null
 
 
 	if(repeat && istype(repeat, /datum/looping_sound))

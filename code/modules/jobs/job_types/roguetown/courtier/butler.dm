@@ -78,7 +78,7 @@
 	..()
 	armor = /obj/item/clothing/armor/gambeson/tailcoat
 	shirt = /obj/item/clothing/suit/roguetown/shirt/undershirt/formal
-	pants = /obj/item/clothing/pants/trou/formal
+	pants = /obj/item/clothing/under/roguetown/trou/formal
 	shoes = /obj/item/clothing/shoes/roguetown/boots/nobleboot
 	backl = /obj/item/storage/backpack/rogue/satchel
 	belt = /obj/item/storage/belt/leather/suspenders/butler // Aware that these render over shit like coats. it's a problem for another day, in my time.
@@ -116,7 +116,7 @@
 
 /datum/outfit/job/seneschal/headmaid/pre_equip(mob/living/carbon/human/H)
 	..()
-	head = /obj/item/clothing/head/maidband
+	head = /obj/item/clothing/head/roguetown/maidband
 	armor = /obj/item/clothing/suit/roguetown/shirt/dress/maid
 	shoes = /obj/item/clothing/shoes/roguetown/shortboots
 	cloak = /obj/item/clothing/cloak/apron/maid
@@ -156,7 +156,7 @@
 	..() // They need a monocle.
 	armor = /obj/item/clothing/armor/gambeson/tailcoat
 	shirt = /obj/item/clothing/suit/roguetown/shirt/undershirt/formal
-	pants = /obj/item/clothing/pants/trou/formal
+	pants = /obj/item/clothing/under/roguetown/trou/formal
 	shoes = /obj/item/clothing/shoes/roguetown/boots/nobleboot
 	backl = /obj/item/storage/backpack/rogue/satchel
 	belt = /obj/item/storage/belt/leather/suspenders/butler

@@ -140,7 +140,11 @@
 /obj/item/storage/belt/leather/suspenders/butler
 	name = "suspenders"
 	desc = "A pair of suspenders which go over the shoulders. Used for keeping one's pants in place in an admittably fashionable style."
+	icon = 'icons/roguetown/clothing/belts.dmi'
 	icon_state = "butlersuspenders"
+	item_state = "butlersuspenders"
+	mob_overlay_icon = 'icons/roguetown/clothing/onmob/belts.dmi'
+	slot_flags = ITEM_SLOT_BELT
 
 /obj/item/storage/belt/rogue/pouch
 	name = "pouch"

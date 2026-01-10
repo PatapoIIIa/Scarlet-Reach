@@ -1366,7 +1366,7 @@ datum/crafting_recipe/roguetown/sewing/Purdress
 // Maid Clothes //
 /datum/crafting_recipe/roguetown/sewing/maidband
 	name = "maid headband"
-	result = list(/obj/item/clothing/head/maidband)
+	result = list(/obj/item/clothing/head/roguetown/maidband)
 	reqs = list(/obj/item/natural/cloth = 1,
 				/obj/item/natural/fibers = 2)
 	tools = list(/obj/item/needle)
@@ -1395,7 +1395,7 @@ datum/crafting_recipe/roguetown/sewing/Purdress
 
 /datum/crafting_recipe/roguetown/sewing/trousershorts
 	name = "trouser shorts"
-	result = list(/obj/item/clothing/pants/trou/formal/shorts)
+	result = list(/obj/item/clothing/under/roguetown/trou/formal/shorts)
 	reqs = list(/obj/item/natural/cloth = 2,
 				/obj/item/natural/fibers = 2)
 	craftdiff = 3
@@ -1416,7 +1416,7 @@ datum/crafting_recipe/roguetown/sewing/Purdress
 
 /datum/crafting_recipe/roguetown/sewing/formaltrousers
 	name = "formal trousers"
-	result = list(/obj/item/clothing/pants/trou/formal)
+	result = list(/obj/item/clothing/under/roguetown/trou/formal)
 	reqs = list(/obj/item/natural/cloth = 3,
 				/obj/item/natural/fibers = 2)
 	craftdiff = 4
